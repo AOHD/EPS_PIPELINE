@@ -1,0 +1,609 @@
+Load libraries
+
+```{r}
+library(tidyverse)
+library(ggupset)
+library(ggplot2)
+library(ggbeeswarm)
+library(ampvis2)
+library(openxlsx)
+library(ggtext)
+`%ni%` <- Negate(`%in%`)
+
+```
+
+Get data - all operons
+
+```{r}
+
+database_all <- data.frame(
+  Target_label = as.character(),
+  Query_label = as.character(),
+  Psiblast = as.character()
+)
+
+
+for (file in list.files("/mnt/ahd/EPS_PIPELINE/output_proximity_filtration/psi_operon_full")) {
+ temp <- read.csv2(paste0("/mnt/ahd/EPS_PIPELINE/output_proximity_filtration/psi_operon_full/",file), sep = "\t") %>% filter(!is.na(Query_label)) %>% select(Target_label, Query_label, Psiblast) %>% mutate(Psiblast = str_sub(file, end = -5))
+ 
+ database_all <- database_all %>% bind_rows(temp) %>% filter(!is.na(Psiblast))
+
+}
+
+
+data_upset_all <- database_all %>%
+  mutate(label = substring(Target_label, 1, nchar(Target_label) - 6)) %>%
+  mutate(
+    Psiblast = str_replace(Psiblast, "alginate", "Alginate"),
+    Psiblast = str_replace(Psiblast, "celluloseI", "Cellulose I"),
+    Psiblast = str_replace(Psiblast, "celluloseII", "Cellulose II"),
+    Psiblast = str_replace(Psiblast, "celluloseIII", "Cellulose III"),
+    Psiblast = str_replace(Psiblast, "cellulose_Ac", "Acetylated cellulose"),
+    Psiblast = str_replace(Psiblast, "cellulose_NA", "Unclassified cellulose"),
+    Psiblast = str_replace(Psiblast, "HA_Pasteurella", "HA (pmHAS)"),
+    Psiblast = str_replace(Psiblast, "HA_streptococcus", "HA (has)"),
+    Psiblast = str_replace(Psiblast, "NulO_merged", "NulO"),
+    Psiblast = str_replace(Psiblast, "pel_merged", "Pel"),
+    Psiblast = str_replace(Psiblast, "pnag_pga", "PNAG (pga)"),
+    Psiblast = str_replace(Psiblast, "B_subtilis_EPS", "*B. subtilis* EPS"),
+    Psiblast = str_replace(Psiblast, "pnag_ica", "PNAG (ica)"),
+    Psiblast = str_replace(Psiblast, "xanthan", "Xanthan"),
+    Psiblast = str_replace(Psiblast, "psl", "Psl"),
+    Psiblast = str_replace(Psiblast, "curdlan", "Curdlan"),
+    Psiblast = str_replace(Psiblast, "diutan", "Diutan"),
+    Psiblast = str_replace(Psiblast, "succinoglycan", "Succinoglycan"),
+    Psiblast = str_replace(Psiblast, "gellan2", "Gellan 2"),
+    Psiblast = str_replace(Psiblast, "burkholderia_eps", "*Burkholderia* EPS"),
+    Psiblast = str_replace(Psiblast, "amylovoran", "Amylovoran"),
+    Psiblast = str_replace(Psiblast, "ColA", "Colanic Acid"),
+    Psiblast = str_replace(Psiblast, "salecan", "Salecan"),
+    Psiblast = str_replace(Psiblast, "stewartan", "Stewartan"),
+    Psiblast = str_replace(Psiblast, "vps", "*Vibrio* EPS"),
+    Psiblast = str_replace(Psiblast, "rhizobium_eps", "*Rhizobium* EPS"),
+    Psiblast = str_replace(Psiblast, "gellan1", "Gellan1"),
+    Psiblast = str_replace(Psiblast, "acetan", "Acetan"),
+    Psiblast = str_replace(Psiblast, "s88", "S88"),
+    Psiblast = str_replace(Psiblast, "levan", "Levan"),
+    Psiblast = str_replace(Psiblast, "methanolan", "Methanolan"),
+    Psiblast = str_replace(Psiblast, "synechan", "Synechan"),
+    Psiblast = str_replace(Psiblast, "galactoglucan", "Galactoglucan"),
+    Psiblast = str_replace(Psiblast, "succinoglycan", "Succinoglycan"),
+    Psiblast = str_replace(Psiblast, "B_fragilis_PS_A", "*B. fragilis* PS A"),
+    Psiblast = str_replace(Psiblast, "B_fragilis_PS_B", "*B. fragilis* PS B"),
+    Psiblast = str_replace(Psiblast, "B_pseudomallei_EPS", "*B. pseudomallei* PS"),
+    Psiblast = str_replace(Psiblast, "cepacian", "Cepacian"),
+    Psiblast = str_replace(Psiblast, "E_faecalis_PS", "*E. faecalis* PS"),
+    Psiblast = str_replace(Psiblast, "emulsan", "Emulsan"),
+    Psiblast = str_replace(Psiblast, "EPS273", "EPS273"),
+    Psiblast = str_replace(Psiblast, "GG", "GG"),
+    Psiblast = str_replace(Psiblast, "glucorhamnan", "Glucorhamnan"),
+    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_33200_EPS_A", "*L. johnsonii* PS A"),
+    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_11506_EPS_B", "*L. johnsonii* PS B"),
+    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_2767_EPS_C", "*L. johnsonii* PS C"),
+    Psiblast = str_replace(Psiblast, "L_lactis_EPS", "*L. lactis* PS"),
+    Psiblast = str_replace(Psiblast, "L_plantarum_HePS", "*L. plantarum* PS"),
+    Psiblast = str_replace(Psiblast, "phosphonoglycan", "Phosphonoglycan")
+    )
+
+data_upset_all_unique <- data_upset_all %>% group_by(Psiblast) %>% distinct(Target_label) %>% ungroup() %>%
+  group_by(Target_label) %>%
+  summarise(queries = list(unique(Psiblast))) %>% ungroup() %>%
+  mutate(
+    Pathway = case_when(
+      queries == "Levan" ~ "Sucrase-dependent",
+      queries %in% c("Cellulose I", "Cellulose II", "Cellulose III", "Acetylated cellulose", "Unclassified cellulose", "Alginate",
+                     "Curdlan", "HA (pmHAS)", "HA (has)", "Pel", "PNAG (ica)", "PNAG (pga)") ~ "Synthase-dependent",
+      queries == "Phosphonoglycan" ~ "PEP-mutase dependent",
+      TRUE ~ "wzx/wzy-dependent"
+    ) 
+      )
+
+
+
+
+```
+
+### Upset plot all
+
+```{r}
+
+#Ordered list of operons from most to least hit
+hitlist <- c(c("*E. faecalis* PS", "Emulsan", "Unclassified cellulose", "Stewartan", "HA (has)"), "Galactoglucan", "Acetylated cellulose", "Pel", "Cellulose III",  "Colanic Acid", "Alginate", "Methanolan", "Acetan", "Amylovoran", "Succinoglycan", "Levan", "*Vibrio* EPS", "HA (pmHAS)", "Synechan", "S88", "Diutan", "Gellan 2",  "PNAG (pga)", "*B. subtilis* EPS", "GG", "*Burkholderia* EPS", "*B. fragilis* PS B", "Cellulose II", "Xanthan", "Salecan", "Psl", "*L. plantarum* PS", "Cepacian", "*B. fragilis* PS A", "Glucorhamnan")
+
+#data_upset_in_region <- data_upset[map_lgl(data_upset$queries, ~length(.x) >= min_genes), ]
+plot_upset <- function(d, sets) {
+    ggplot(d, aes(x = queries)) +
+    geom_bar() +
+    scale_x_upset(n_intersections = 200, sets=sets) +
+    ylab("") +
+    xlab("") +
+    theme(
+      axis.text.y = element_markdown(size = 20)
+    )
+} 
+
+upset_all <- plot_upset(data_upset_all_unique, sets = hitlist)
+
+
+
+ggsave("/mnt/ahd/EPS_PIPELINE/figures/upset/upset_ProkkaNO.pdf", upset_all, limitsize = FALSE, width = 14, height = 16, dpi = 300)
+
+
+```
+
+Get data - operon comparison
+
+```{r}
+database_comp <- data.frame(
+  Target_label = as.character(),
+  Query_label = as.character(),
+  Psiblast = as.character()
+)
+
+
+
+for (file in list("stewartan.tsv", "amylovoran.tsv")) {
+ temp <- read.csv2(paste0("/mnt/ahd/EPS_PIPELINE/output_proximity_filtration/psi_operon_full/",file), sep = "\t") %>% filter(!is.na(Query_label)) %>% select(Target_label, Query_label, Psiblast)
+ 
+ database_comp <- database_comp %>% bind_rows(temp) %>% filter(!is.na(Psiblast))
+
+}
+
+data_upset_comp <- database_comp %>%
+  mutate(label = substring(Target_label, 1, nchar(Target_label) - 6))
+
+data_upset_comp <- database_comp %>%
+    group_by(Target_label) %>%
+    summarise(queries = list(unique(Query_label))) %>% ungroup()
+
+
+```
+
+### Upset plot comp
+
+Top 30 combinations shown.
+
+```{r}
+
+hitlist <- c("CpsG", "CpsK", "CpsA", "CpsF", "CpsE", "CpsC", "CpsB", "CpsJ", "amsK", 
+             "amsA", "amsB", "amsG", "amsH", "amsE", "amsD", "amsL", "amsI", "amsJ")
+
+
+#data_upset_in_region <- data_upset[map_lgl(data_upset$queries, ~length(.x) >= min_genes), ]
+plot_upset <- function(d, sets) {
+    ggplot(d, aes(x = queries)) +
+    geom_bar() +
+    scale_x_upset(n_intersections =150, sets=sets)
+} 
+
+upset_comp <- plot_upset(data_upset_comp, sets = hitlist) + ggtitle("ProkkaNO gene overlap")
+upset_comp
+
+ggsave("/mnt/ahd/EPS_PIPELINE/figures/upset/upset_ProkkaNO_cps_ams.pdf", upset_comp, limitsize = FALSE, width = 14, height = 6, dpi = 600)
+
+
+```
+
+## Exploring genes
+
+```{r}
+x <- c("CpsA", "CpsB","CpsI","CpsC","CpsD","CpsE","CpsF","CpsG","CpsH","CpsJ","CpsK","CpsL")
+x <- c("amsG", "amsH", "amsI", "amsA", "amsB", "amsC", "amsD", "amsE", "amsF", "amsJ", "amsK", "amsL")
+UpsetStewartan <- database_comp %>% filter(Query_label %in% c("CpsA", "CpsB","CpsI","CpsC","CpsD","CpsE","CpsF","CpsG","CpsH","CpsJ","CpsK","CpsL"))
+
+UpsetStewartan <- data_upset_comp %>% filter(Target_label %in% x$Target_label)
+
+#Non-unique stewartan genes are
+y <- c("CpsA", "CpsB", "CpsC", "CpsL", "CpsE", "CpsK", "CpsG", "CpsF")
+y <- c("amsA", "amsH", "amsG", "amsB", "amsE", "amsL", "amsK", "amsD", "amsJ", "amsI")
+z <- setdiff(x,y)
+
+```
+
+## Exploring how many MAGs are hit, getting core and CRAT info
+
+```{r}
+
+database_all <- data_upset_all %>% mutate(label = substring(Target_label, 1, nchar(Target_label) - 6))
+
+operons_detected <- length(unique(database_all$label))
+
+(operons_detected/689)*100
+
+hits <- database_all %>% group_by(Psiblast) %>% distinct(label) %>% summarise(label = sum(length(label))) %>%
+  pivot_wider(names_from = Psiblast, values_from = label) %>% mutate(" " = "Pipeline hits")
+
+phylum <- read_tsv("/mnt/ahd/EPS_PIPELINE/data/raw/magstats.tsv") %>% 
+  mutate(
+    phylum =   str_extract(midas4_tax, "p:[^,]*"),
+    phylum =   str_remove(phylum, "p:"),
+    
+    class =  str_extract(midas4_tax, "c:[^,]*"),
+    class =  str_remove(class, "c:"),
+    class =  str_remove(class, ";"),
+    
+    order =  str_extract(midas4_tax, "o:[^,]*"),
+    order =  str_remove(order, "o:"),
+    order =  str_remove(order, ";"),
+    
+    family =  str_extract(midas4_tax, "f:[^,]*"),
+    family =  str_remove(family, "f:"),
+    family =  str_remove(family, ";"),
+    
+    genus =  str_extract(midas4_tax, "g:[^,]*"),
+    genus =  str_remove(genus, "g:"),
+    genus =  str_remove(genus, ";"),
+    
+    species = str_extract(midas4_tax, "s:[^,]*"),
+    species = str_remove(species, "s:"),
+    species = str_remove(species, ";")
+    
+  ) %>% 
+  rename(ID = bin) %>%
+  select(ID, phylum, class, order, family, genus, species) %>% 
+  setNames(c("label", "phylum", "class", "order", "family", "genus", "species")) %>%
+  filter(!is.na(label), phylum != "Halobacterota")
+
+phylaehits <- database_all %>% left_join(phylum, by = "label") %>% group_by(Psiblast) %>% distinct(phylum) %>% summarise(phylum = sum(length(phylum))) %>% pivot_wider(names_from = Psiblast, values_from = phylum) %>% mutate(" " = "Phyla")
+
+magstatscore <- read_tsv("/mnt/ahd/EPS_PIPELINE/data/raw/magstats_with_core.tsv") %>% rename(label = mag)
+
+CRAT <- database_all %>% left_join(magstatscore, by = "label") %>% group_by(Psiblast, species_core) %>% distinct(label) %>% ungroup() %>%
+  group_by(Psiblast) %>% filter(species_core == "CRAT") %>% summarise(CRAT = sum(length(species_core))) %>%
+  pivot_wider(names_from = Psiblast, values_from = CRAT) %>% mutate(" " = "CRAT species")
+
+CORE_general <- database_all %>% left_join(magstatscore, by = "label") %>% group_by(Psiblast, species_core) %>% distinct(label) %>% ungroup() %>%
+  group_by(Psiblast) %>% filter(species_core == "General core") %>% summarise(General = sum(length(species_core))) %>%
+  pivot_wider(names_from = Psiblast, values_from = General) %>% mutate(" " = "General core species")
+
+CORE_loose <- database_all %>% left_join(magstatscore, by = "label") %>% group_by(Psiblast, species_core) %>% distinct(label) %>% ungroup() %>%
+  group_by(Psiblast) %>% filter(species_core == "Loose core") %>% summarise(Loose = sum(length(species_core))) %>%
+  pivot_wider(names_from = Psiblast, values_from = Loose) %>% mutate(" " = "Loose core species")
+
+overview <- hits %>% full_join(phylaehits) %>% select(` `, everything())
+overview <- overview %>% full_join(CORE_general)
+overview <- overview %>% full_join(CORE_loose)
+overview <- overview %>% full_join(CRAT)
+
+overview_long <- as.data.frame(t(rev(overview))) %>% rename(`Pipeline hits` = V1) %>% arrange(desc(`Pipeline hits`)) %>% 
+  filter(V2 != "Phylae")
+overview_long$Psiblast <- rownames(overview_long)
+
+overview_long <- overview_long %>% select(Psiblast, `Pipeline hits`)
+
+write_tsv(overview, "/mnt/ahd/EPS_PIPELINE/data/raw/pipeline_overview.tsv")
+
+overview <- overview %>% select(" ", overview_long$Psiblast)
+
+
+```
+
+
+## Functional species and what/how much they express
+
+```{r}
+
+
+EPS_table_RSEM <- readRDS("/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_Fullscale_RSEM.rds")
+EPS_table_RSEM$`Processing tank` <- factor(EPS_table_RSEM$`Processing tank`,levels = 
+                                                        c("Anoxic stage", "Aerobic stage", "Return sludge", "Sidestream tank 1", "Sidestream tank 2"))
+
+functional_groups <- midasfunctions %>% rename(genus = Genus) %>%
+  mutate(genus = str_replace_all(genus, " ", "_")) %>% select(genus, Filamentous, PAO, GAO, AOB, NOB)
+
+phylum <- read_tsv("/mnt/ahd/EPS_PIPELINE/data/raw/magstats.tsv") %>% 
+  mutate(
+    phylum =   str_extract(midas4_tax, "p:[^,]*"),
+    phylum =   str_remove(phylum, "p:"),
+    
+    class =  str_extract(midas4_tax, "c:[^,]*"),
+    class =  str_remove(class, "c:"),
+    class =  str_remove(class, ";"),
+    
+    order =  str_extract(midas4_tax, "o:[^,]*"),
+    order =  str_remove(order, "o:"),
+    order =  str_remove(order, ";"),
+    
+    family =  str_extract(midas4_tax, "f:[^,]*"),
+    family =  str_remove(family, "f:"),
+    family =  str_remove(family, ";"),
+    
+    genus =  str_extract(midas4_tax, "g:[^,]*"),
+    genus =  str_remove(genus, "g:"),
+    genus =  str_remove(genus, ";"),
+    
+    species = str_extract(midas4_tax, "s:[^,]*"),
+    species = str_remove(species, "s:"),
+    species = str_remove(species, ";")
+    
+  ) %>% 
+  rename(ID = bin) %>%
+  select(ID, phylum, class, order, family, genus, species) %>% 
+  setNames(c("MAG_id", "phylum", "class", "order", "family", "genus", "species")) %>%
+  filter(!is.na(MAG_id), phylum != "Halobacterota") %>%
+  left_join(functional_groups, by = "genus")
+
+# Creating a dataframe which shows mean TPM per operons per MAG
+EPS_table_RSEM_operon1 <- EPS_table_RSEM %>% left_join(phylum, by = "MAG_id") %>% filter(`Processing tank` == "Anoxic stage") %>%
+  group_by(MAG_id, genus, species, `Relative abundance (%)`, operonNO, PAO, GAO, AOB, NOB, Filamentous, operon, `Sample#`) %>% 
+  summarise(across(c(TPM, rel_TPM), .fns = mean)) %>% ungroup() %>% 
+  group_by(MAG_id, genus, species, `Relative abundance (%)`, operonNO, PAO, GAO, AOB, NOB, Filamentous, operon) %>% 
+  summarise(across(c(TPM, rel_TPM), .fns = sum)) %>% rename(exoPS = operon, `MAG-level TPM`=rel_TPM) %>%
+  mutate(
+      genus = str_replace_all(genus, 
+                              pattern = "Ca_", 
+                              replacement = "Candidatus ") ,
+      species = str_replace_all(species,
+                                pattern = "Ca_*_",
+                                replacement = ""),
+      species = str_replace_all(species,
+                                pattern = "Microthrix_",
+                                replacement = ""),
+      species = str_replace_all(species,
+                                pattern = "Nitrospira_",
+                                replacement = ""),
+      species = str_replace_all(species,
+                                pattern = "Sphingopyxis_",
+                                replacement = ""),
+      species = str_replace_all(species,
+                                pattern = "Phreatobacter_",
+                                replacement = ""),
+      species = str_replace_all(species,
+                                pattern = "Haliscomenobacter_",
+                                replacement = ""),
+      species = str_replace_all(species,
+                                pattern = "Tabrizicola_",
+                                replacement = ""),
+      species = str_replace_all(species,
+                                pattern = "Dechloromonas_",
+                                replacement = ""),
+      species = str_replace_all(species,
+                                pattern = "Amarolinea_",
+                                replacement = ""),
+      species = str_replace_all(species,
+                                pattern = "Methylophosphatis_",
+                                replacement = ""),
+      genus = ifelse(MAG_id %in% c("AalE_18-Q3-R2-46_BAT3C.188", "AalW_18-Q3-R10-53_BAT3C.524", "Bjer_18-Q3-R1-45_BAT3C.93",
+                                  "Ega_18-Q3-R5-49_MAXAC.001", "EsbW_18-Q3-R4-48_BAT3C.295", "Hirt_18-Q3-R61-65_BAT3C.386",
+                                  "Hjor_18-Q3-R7-51_BAT3C.81_sub", "Hjor_18-Q3-R7-51_MAXAC.088", "Mari_18-Q3-R65-66_BAT3C.41",
+                                  "Ribe_18-Q3-R11-54_MAXAC.001"), "Candidatus Phosphoribacter", genus),
+      species = ifelse(MAG_id %in% c("EsbW_18-Q3-R4-48_BAT3C.295", "AalW_18-Q3-R10-53_BAT3C.524", "Bjer_18-Q3-R1-45_BAT3C.93"), "baldrii", species),
+      species = ifelse(MAG_id %in% c("AalE_18-Q3-R2-46_BAT3C.188", "Ega_18-Q3-R5-49_MAXAC.001", "Ribe_18-Q3-R11-54_MAXAC.001"), "hodrii", species),
+      species = ifelse(MAG_id %in% c("Hirt_18-Q3-R61-65_BAT3C.386"), "Pbr3", species),
+      species = ifelse(MAG_id %in% c("Hjor_18-Q3-R7-51_MAXAC.088"), "Pbr4", species),
+      species = ifelse(MAG_id %in% c("Hjor_18-Q3-R7-51_BAT3C.81_sub"), "Pbr5", species),
+      species = ifelse(MAG_id %in% c("Mari_18-Q3-R65-66_BAT3C.41"), "Pbr6", species),
+      genus = ifelse(species == "midas_s_45", "Lutibacillus", genus),
+      species = ifelse(species == "midas_s_45", "vidarii", species)
+      ) %>%
+  mutate(Species = paste(genus, species))
+
+
+PAO <- EPS_table_RSEM_operon %>% select(MAG_id, PAO, GAO, AOB, NOB, Filamentous, Species, `Relative abundance (%)`, exoPS, TPM, `MAG-level TPM`) %>% filter(PAO %in% c( "POS")) %>% arrange(Species)
+
+GAO <- EPS_table_RSEM_operon %>% select(PAO, GAO, AOB, NOB, Filamentous, Species, `Relative abundance (%)`, exoPS, TPM, `MAG-level TPM`) %>% filter(GAO %in% c( "POS")) %>% arrange(Species)
+
+NOB <- EPS_table_RSEM_operon %>% select(PAO, GAO, AOB, NOB, Filamentous, Species, `Relative abundance (%)`, exoPS, TPM, `MAG-level TPM`) %>% filter(NOB %in% c( "POS")) %>% arrange(Species)
+
+AOB <- EPS_table_RSEM_operon %>% select(PAO, GAO, AOB, NOB, Filamentous, Species, `Relative abundance (%)`, exoPS, TPM, `MAG-level TPM`) %>% filter(AOB %in% c( "POS")) %>% arrange(Species)
+
+Filamentous <- EPS_table_RSEM_operon %>% select(PAO, GAO, AOB, NOB, Filamentous, Species, `Relative abundance (%)`, exoPS, TPM, `MAG-level TPM`) %>% filter(Filamentous %in% c("POS")) %>% arrange(Species)
+
+notFilamentous <- EPS_table_RSEM_operon %>% select(PAO, GAO, AOB, NOB, Filamentous, Species, `Relative abundance (%)`, exoPS, TPM, `MAG-level TPM`) %>% filter(PAO %in% c("POS") | GAO %in% c("POS") | AOB %in% c("POS") | NOB %in% c("POS")) %>% arrange(Species)
+	
+work_book <- createWorkbook()
+
+addWorksheet(work_book, sheetName =  "Overview")
+addWorksheet(work_book, sheetName =  "PAO")
+addWorksheet(work_book, sheetName =  "GAO")
+addWorksheet(work_book, sheetName =  "NOB")
+addWorksheet(work_book, sheetName =  "AOB")
+addWorksheet(work_book, sheetName =  "Filamentous")
+
+
+writeData(work_book, "PAO", PAO)
+writeData(work_book, "GAO", GAO)
+writeData(work_book, "NOB", NOB)
+writeData(work_book, "AOB", AOB)
+writeData(work_book, "Filamentous", Filamentous)
+
+saveWorkbook(work_book,
+             file= "/mnt/ahd/EPS_PIPELINE/data/raw/Guilds_products_TPM.xlsx",
+             overwrite = TRUE)
+# 
+abundance_metaG <- read_tsv("/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/relative_abundance_metagenome.tsv") %>%
+  dplyr::rename(MAG_id = Genome, `Relative abundance (%)` = 2) %>% filter(MAG_id != "unmapped")
+
+EPS_table_norelabun <- EPS_table_RSEM_operon %>% ungroup() %>% select(-`Relative abundance (%)`)
+
+topabund <- abundance_metaG %>%
+  filter(MAG_id %in% c("Ega_18-Q3-R5-49_MAXAC.001", "Viby_18-Q3-R106-67_BAT3C.52", "AalW_18-Q3-R10-53_BAT3C.524",
+                       "Ribe_18-Q3-R11-54_BATAC.650", "Lyne_18-Q3-R50-59_MAXAC.006", "AalE_18-Q3-R2-46_BATAC.251",
+                       "Ribe_18-Q3-R11-54_MAXAC.030", "EsbW_18-Q3-R4-48_MAXAC.006_sub", "AalE_18-Q3-R2-46_BAT3C.116",
+                       "glom_0540")) %>% left_join(EPS_table_norelabun, by = "MAG_id") %>% arrange(desc(`Relative abundance (%)`)) %>%
+  select(MAG_id, PAO, GAO, AOB, NOB, Filamentous, Species, `Relative abundance (%)`, exoPS, TPM, `MAG-level TPM`)
+
+
+work_book2 <- createWorkbook()
+
+
+addWorksheet(work_book2, sheetName =  "table")
+addWorksheet(work_book2, sheetName =  "abund")
+
+writeData(work_book2, "abund", topabund)
+
+saveWorkbook(work_book2,
+             file= "/mnt/ahd/EPS_PIPELINE/data/raw/top_abund_TPM.xlsx",
+             overwrite = TRUE)
+
+```
+
+
+
+
+
+
+```{r}
+
+perc_id <- data.frame(
+  Target_label = as.character(),
+  Query_label = as.character(),
+  Psiblast = as.character()
+)
+
+
+for (file in list.files("/mnt/ahd/EPS_PIPELINE/output_proximity_filtration/psi_percID_filt")) {
+ temp <- read.csv2(paste0("/mnt/ahd/EPS_PIPELINE/output_proximity_filtration/psi_percID_filt/",file), sep = "\t") %>% filter(!is.na(Query_label)) %>% select(Target_label, Query_label, Psiblast) %>% mutate(Psiblast = str_sub(file, end = -5))
+ 
+ perc_id <- perc_id %>% bind_rows(temp) %>% filter(!is.na(Psiblast))
+
+}
+
+
+perc_id_unique <- perc_id %>%
+  mutate(label = substring(Target_label, 1, nchar(Target_label) - 6)) %>%
+  mutate(
+    Psiblast = str_replace(Psiblast, "alginate", "Alginate"),
+    Psiblast = str_replace(Psiblast, "celluloseI", "Cellulose I"),
+    Psiblast = str_replace(Psiblast, "celluloseII", "Cellulose II"),
+    Psiblast = str_replace(Psiblast, "celluloseIII", "Cellulose III"),
+    Psiblast = str_replace(Psiblast, "cellulose_Ac", "Acetylated cellulose"),
+    Psiblast = str_replace(Psiblast, "cellulose_NA", "Unclassified cellulose"),
+    Psiblast = str_replace(Psiblast, "HA_Pasteurella", "HA (pmHAS)"),
+    Psiblast = str_replace(Psiblast, "HA_streptococcus", "HA (has)"),
+    Psiblast = str_replace(Psiblast, "NulO_merged", "NulO"),
+    Psiblast = str_replace(Psiblast, "pel_merged", "Pel"),
+    Psiblast = str_replace(Psiblast, "pnag_pga", "PNAG (pga)"),
+    Psiblast = str_replace(Psiblast, "B_subtilis_EPS", "B. subtilis EPS"),
+    Psiblast = str_replace(Psiblast, "pnag_ica", "PNAG (ica)"),
+    Psiblast = str_replace(Psiblast, "xanthan", "Xanthan"),
+    Psiblast = str_replace(Psiblast, "psl", "Psl"),
+    Psiblast = str_replace(Psiblast, "curdlan", "Curdlan"),
+    Psiblast = str_replace(Psiblast, "diutan", "Diutan"),
+    Psiblast = str_replace(Psiblast, "succinoglycan", "Succinoglycan"),
+    Psiblast = str_replace(Psiblast, "gellan2", "Gellan2"),
+    Psiblast = str_replace(Psiblast, "burkholderia_eps", "Burkholderia EPS"),
+    Psiblast = str_replace(Psiblast, "amylovoran", "Amylovoran"),
+    Psiblast = str_replace(Psiblast, "ColA", "Colanic Acid"),
+    Psiblast = str_replace(Psiblast, "salecan", "Salecan"),
+    Psiblast = str_replace(Psiblast, "stewartan", "Stewartan"),
+    Psiblast = str_replace(Psiblast, "vps", "Vibrio EPS"),
+    Psiblast = str_replace(Psiblast, "rhizobium_eps", "Rhizobium EPS"),
+    Psiblast = str_replace(Psiblast, "gellan1", "Gellan1"),
+    Psiblast = str_replace(Psiblast, "acetan", "Acetan"),
+    Psiblast = str_replace(Psiblast, "s88", "s88"),
+    Psiblast = str_replace(Psiblast, "levan", "Levan"),
+    Psiblast = str_replace(Psiblast, "methanolan", "Methanolan"),
+    Psiblast = str_replace(Psiblast, "synechan", "Synechan"),
+    Psiblast = str_replace(Psiblast, "galactoglucan", "Galactoglucan"),
+    Psiblast = str_replace(Psiblast, "succinoglycan", "Succinoglycan"),
+    Psiblast = str_replace(Psiblast, "B_fragilis_PS_A", "B. fragilis PS A"),
+    Psiblast = str_replace(Psiblast, "B_fragilis_PS_B", "B. fragilis PS B"),
+    Psiblast = str_replace(Psiblast, "B_pseudomallei_EPS", "B. pseudomallei PS"),
+    Psiblast = str_replace(Psiblast, "cepacian", "Cepacian"),
+    Psiblast = str_replace(Psiblast, "E_faecalis_PS", "E. faecalis PS"),
+    Psiblast = str_replace(Psiblast, "emulsan", "Emulsan"),
+    Psiblast = str_replace(Psiblast, "EPS273", "EPS273"),
+    Psiblast = str_replace(Psiblast, "GG", "GG"),
+    Psiblast = str_replace(Psiblast, "glucorhamnan", "Glucorhamnan"),
+    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_33200_EPS_A", "L. johnsonii PS A"),
+    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_11506_EPS_B", "L. johnsonii PS B"),
+    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_2767_EPS_C", "L. johnsonii PS C"),
+    Psiblast = str_replace(Psiblast, "L_lactis_EPS", "L. lactis PS"),
+    Psiblast = str_replace(Psiblast, "L_plantarum_HePS", "L. plantarum PS"),
+    Psiblast = str_replace(Psiblast, "phosphonoglycan", "Phosphonoglycan")
+    ) %>% mutate(
+    Pathway = case_when(
+      Psiblast == "Levan" ~ "Sucrase-dependent",
+      Psiblast %in% c("Cellulose I", "Cellulose II", "Cellulose III", "Acetylated cellulose", "Unclassified cellulose", "Alginate",
+                     "Curdlan", "HA (pmHAS)", "HA (has)", "Pel", "PNAG (ica)", "PNAG (pga)") ~ "Synthase-dependent",
+      Psiblast == "Phosphonoglycan" ~ "PEP-mutase dependent",
+      TRUE ~ "wzx/wzy-dependent"
+    ) 
+      ) %>% distinct(Psiblast, .keep_all = TRUE)
+
+perc_id_unique %>% filter(Pathway == "wzx/wzy-dependent")
+perc_id_unique %>% filter(Pathway == "Synthase-dependent")
+
+
+proxi <- data.frame(
+  Target_label = as.character(),
+  Query_label = as.character(),
+  Psiblast = as.character()
+)
+
+
+for (file in list.files("/mnt/ahd/EPS_PIPELINE/output_proximity_filtration/psi_proxi_filt")) {
+ temp <- read.csv2(paste0("/mnt/ahd/EPS_PIPELINE/output_proximity_filtration/psi_proxi_filt/",file), sep = "\t") %>% filter(!is.na(Query_label)) %>% select(Target_label, Query_label, Psiblast) %>% mutate(Psiblast = str_sub(file, end = -5))
+ 
+ proxi <- proxi %>% bind_rows(temp) %>% filter(!is.na(Psiblast))
+
+}
+
+
+proxi_unique <- proxi %>%
+  mutate(label = substring(Target_label, 1, nchar(Target_label) - 6)) %>%
+  mutate(
+    Psiblast = str_replace(Psiblast, "alginate", "Alginate"),
+    Psiblast = str_replace(Psiblast, "celluloseI", "Cellulose I"),
+    Psiblast = str_replace(Psiblast, "celluloseII", "Cellulose II"),
+    Psiblast = str_replace(Psiblast, "celluloseIII", "Cellulose III"),
+    Psiblast = str_replace(Psiblast, "cellulose_Ac", "Acetylated cellulose"),
+    Psiblast = str_replace(Psiblast, "cellulose_NA", "Unclassified cellulose"),
+    Psiblast = str_replace(Psiblast, "HA_Pasteurella", "HA (pmHAS)"),
+    Psiblast = str_replace(Psiblast, "HA_streptococcus", "HA (has)"),
+    Psiblast = str_replace(Psiblast, "NulO_merged", "NulO"),
+    Psiblast = str_replace(Psiblast, "pel_merged", "Pel"),
+    Psiblast = str_replace(Psiblast, "pnag_pga", "PNAG (pga)"),
+    Psiblast = str_replace(Psiblast, "B_subtilis_EPS", "B. subtilis EPS"),
+    Psiblast = str_replace(Psiblast, "pnag_ica", "PNAG (ica)"),
+    Psiblast = str_replace(Psiblast, "xanthan", "Xanthan"),
+    Psiblast = str_replace(Psiblast, "psl", "Psl"),
+    Psiblast = str_replace(Psiblast, "curdlan", "Curdlan"),
+    Psiblast = str_replace(Psiblast, "diutan", "Diutan"),
+    Psiblast = str_replace(Psiblast, "succinoglycan", "Succinoglycan"),
+    Psiblast = str_replace(Psiblast, "gellan2", "Gellan2"),
+    Psiblast = str_replace(Psiblast, "burkholderia_eps", "Burkholderia EPS"),
+    Psiblast = str_replace(Psiblast, "amylovoran", "Amylovoran"),
+    Psiblast = str_replace(Psiblast, "ColA", "Colanic Acid"),
+    Psiblast = str_replace(Psiblast, "salecan", "Salecan"),
+    Psiblast = str_replace(Psiblast, "stewartan", "Stewartan"),
+    Psiblast = str_replace(Psiblast, "vps", "Vibrio EPS"),
+    Psiblast = str_replace(Psiblast, "rhizobium_eps", "Rhizobium EPS"),
+    Psiblast = str_replace(Psiblast, "gellan1", "Gellan1"),
+    Psiblast = str_replace(Psiblast, "acetan", "Acetan"),
+    Psiblast = str_replace(Psiblast, "s88", "s88"),
+    Psiblast = str_replace(Psiblast, "levan", "Levan"),
+    Psiblast = str_replace(Psiblast, "methanolan", "Methanolan"),
+    Psiblast = str_replace(Psiblast, "synechan", "Synechan"),
+    Psiblast = str_replace(Psiblast, "galactoglucan", "Galactoglucan"),
+    Psiblast = str_replace(Psiblast, "succinoglycan", "Succinoglycan"),
+    Psiblast = str_replace(Psiblast, "B_fragilis_PS_A", "B. fragilis PS A"),
+    Psiblast = str_replace(Psiblast, "B_fragilis_PS_B", "B. fragilis PS B"),
+    Psiblast = str_replace(Psiblast, "B_pseudomallei_EPS", "B. pseudomallei PS"),
+    Psiblast = str_replace(Psiblast, "cepacian", "Cepacian"),
+    Psiblast = str_replace(Psiblast, "E_faecalis_PS", "E. faecalis PS"),
+    Psiblast = str_replace(Psiblast, "emulsan", "Emulsan"),
+    Psiblast = str_replace(Psiblast, "EPS273", "EPS273"),
+    Psiblast = str_replace(Psiblast, "GG", "GG"),
+    Psiblast = str_replace(Psiblast, "glucorhamnan", "Glucorhamnan"),
+    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_33200_EPS_A", "L. johnsonii PS A"),
+    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_11506_EPS_B", "L. johnsonii PS B"),
+    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_2767_EPS_C", "L. johnsonii PS C"),
+    Psiblast = str_replace(Psiblast, "L_lactis_EPS", "L. lactis PS"),
+    Psiblast = str_replace(Psiblast, "L_plantarum_HePS", "L. plantarum PS"),
+    Psiblast = str_replace(Psiblast, "phosphonoglycan", "Phosphonoglycan")
+    ) %>% mutate(
+    Pathway = case_when(
+      Psiblast == "Levan" ~ "Sucrase-dependent",
+      Psiblast %in% c("Cellulose I", "Cellulose II", "Cellulose III", "Acetylated cellulose", "Unclassified cellulose", "Alginate",
+                     "Curdlan", "HA (pmHAS)", "HA (has)", "Pel", "PNAG (ica)", "PNAG (pga)") ~ "Synthase-dependent",
+      Psiblast == "Phosphonoglycan" ~ "PEP-mutase dependent",
+      TRUE ~ "wzx/wzy-dependent"
+    ) 
+      ) %>% distinct(Psiblast, .keep_all = TRUE)
+
+proxi_unique %>% filter(Pathway == "wzx/wzy-dependent")
+proxi_unique %>% filter(Pathway == "Synthase-dependent")
+
+```
