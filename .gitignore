@@ -16,3 +16,5 @@ tree_results/
 *.rds
 data/raw/*.xlsx
 !data/raw/Query_figur.xlsx
+.RData
+.Rhistory
