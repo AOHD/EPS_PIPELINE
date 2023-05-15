@@ -146,31 +146,17 @@ EPS_table_RSEM_summarized_counts <- EPS_table_RSEM_counts %>%
 EPS_table_RSEM_summarized_TPM <- EPS_table_RSEM_TPM %>%
   filter(MAG_id %in% c("Ega_18-Q3-R5-49_MAXAC.001", "AalW_18-Q3-R10-53_BAT3C.524", "Lyne_18-Q3-R50-59_MAXAC.006", "AalE_18-Q3-R2-46_BATAC.251")) %>%
   group_by(`Sample#`, `Processing tank`, MAG_id) %>%
-  summarise(expected_count = sum(expected_count)) %>% ungroup()
+  summarise(TPM = sum(TPM)) %>% ungroup()
 
 saveRDS(EPS_table_RSEM_summarized_counts, file = "/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_counts_summarized_selected.rds")
 saveRDS(EPS_table_RSEM_summarized_TPM, file = "/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_TPM_summarized_selected.rds")
 
+EPS_table_RSEM_summarized_counts <-readRDS("/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_counts_summarized_selected.rds")
+EPS_table_RSEM_summarized_TPM <- readRDS("/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_TPM_summarized_selected.rds")
 
-EPS_table_RSEM_summarized_counts <- readRDS("/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_counts_summarized_selected.rds") %>%
-  mutate(
-    `Processing tank` = str_replace(`Processing tank`, "Full-scale measurements aerobic stage", "Aerobic stage"),
-    `Processing tank` = str_replace(`Processing tank`, "Full-scale measurements sidestream tank 1", "Sidestream tank 1"),
-    `Processing tank` = str_replace(`Processing tank`, "Full-scale measurements sidestream tank 2", "Sidestream tank 2"),
-    `Processing tank` = str_replace(`Processing tank`, "Full-scale measurements return sludge", "Return sludge"),
-    `Processing tank` = str_replace(`Processing tank`, "Full-scale measurements anoxic stage", "Anoxic stage")) %>%
-    group_by(`Processing tank`, MAG_id) %>% summarise(
-      mean = mean(expected_count),
-      sd = sd(expected_count),
-      n = n(),
-      se = sd/sqrt(n)
-    ) %>%
-    mutate(MAG_id = ifelse(MAG_id == "Ega_18-Q3-R5-49_MAXAC.001", "*Ca.* P. baldrii", MAG_id),
-           MAG_id = ifelse(MAG_id == "AalW_18-Q3-R10-53_BAT3C.524", "*Ca.* P. hodrii", MAG_id),
-           MAG_id = ifelse(MAG_id == "Lyne_18-Q3-R50-59_MAXAC.006", "*Ca.* M. subdominans", MAG_id),
-           MAG_id = ifelse(MAG_id == "AalE_18-Q3-R2-46_BATAC.251", "midas_g_461 midas_s_461", MAG_id))
+counts_TPM_together <- EPS_table_RSEM_summarized_counts %>% left_join(EPS_table_RSEM_summarized_TPM)
 
-EPS_table_RSEM_summarized_TPM <- readRDS("/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_TPM_summarized_selected.rds") %>%
+EPS_table_RSEM_summarized_TPM <- readRDS("/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_TPM_summarized_selected.rds") %>%
   mutate(
     `Processing tank` = str_replace(`Processing tank`, "Full-scale measurements aerobic stage", "Aerobic stage"),
     `Processing tank` = str_replace(`Processing tank`, "Full-scale measurements sidestream tank 1", "Sidestream tank 1"),
