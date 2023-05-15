@@ -154,7 +154,7 @@ EPS_table_RSEM_summarized_TPM <- readRDS("/mnt/ahd/EPS_PIPELINE/data/metatranscr
 
 counts_TPM_together <- EPS_table_RSEM_summarized_counts %>% left_join(EPS_table_RSEM_summarized_TPM)
 
-EPS_table_RSEM_summarized_TPM <- readRDS("/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_TPM_summarized_selected.rds") %>%
+EPS_table_RSEM_summarized_together <- counts_TPM_together %>%
   mutate(
     `Processing tank` = str_replace(`Processing tank`, "Full-scale measurements aerobic stage", "Aerobic stage"),
     `Processing tank` = str_replace(`Processing tank`, "Full-scale measurements sidestream tank 1", "Sidestream tank 1"),
@@ -162,10 +162,14 @@ EPS_table_RSEM_summarized_TPM <- readRDS("/mnt/ahd/EPS_PIPELINE/data/metatranscr
     `Processing tank` = str_replace(`Processing tank`, "Full-scale measurements return sludge", "Return sludge"),
     `Processing tank` = str_replace(`Processing tank`, "Full-scale measurements anoxic stage", "Anoxic stage")) %>%
   group_by(`Processing tank`, MAG_id) %>% summarise(
-    mean = mean(expected_count),
-    sd = sd(expected_count),
-    n = n(),
-    se = sd/sqrt(n)
+    mean_count = mean(expected_count),
+    sd_count = sd(expected_count),
+    n_count = n(),
+    se_count = sd_count/sqrt(n_count),
+    mean_TPM = mean(TPM),
+    sd_TPM = sd(TPM),
+    n_TPM = n(),
+    se_TPM = sd_TPM/sqrt(n_TPM)
   ) %>%
   mutate(MAG_id = ifelse(MAG_id == "Ega_18-Q3-R5-49_MAXAC.001", "*Ca.* P. baldrii", MAG_id),
          MAG_id = ifelse(MAG_id == "AalW_18-Q3-R10-53_BAT3C.524", "*Ca.* P. hodrii", MAG_id),
@@ -173,13 +177,12 @@ EPS_table_RSEM_summarized_TPM <- readRDS("/mnt/ahd/EPS_PIPELINE/data/metatranscr
          MAG_id = ifelse(MAG_id == "AalE_18-Q3-R2-46_BATAC.251", "midas_g_461 midas_s_461", MAG_id))
 
 
-summarized_counts_Fullscale <- ggplot(EPS_table_RSEM_summarized, aes(`Processing tank`, mean, color = MAG_id)) +
-  geom_point(size = 3) +
-  xlab("") + ylab("expected_count")+
+
+summarized_counts_Fullscale_count <- ggplot(EPS_table_RSEM_summarized_together, aes(`Processing tank`, mean_count, color = MAG_id)) +
+  geom_pointrange(size = 1, aes(ymin = mean_count - se_count, ymax = mean_count + se_count)) +
+  geom_line(aes(group = MAG_id)) +
+  xlab("") + ylab("Expected count")+
   theme_bw() +
-  geom_errorbar(
-    aes(ymin = mean - se, ymax = mean + se, linewidth = 0.5), width = 0.2, show.legend = FALSE
-  ) +
   scale_y_continuous(breaks = pretty_breaks(n=4)) +
   theme(text=element_text(size=30, colour = "black"),
         axis.text.x = element_text(size = 22, colour = "black", angle = 45, hjust = 1),
@@ -189,7 +192,22 @@ summarized_counts_Fullscale <- ggplot(EPS_table_RSEM_summarized, aes(`Processing
         legend.title = element_text(size = 26, face ="bold", colour = "black"),
         legend.position = "right") +
   guides(color = guide_legend(override.aes = list(size = 5),
-  ))
+  )) + labs(color = "MAG")
+
+summarized_counts_Fullscale_TPM <- ggplot(EPS_table_RSEM_summarized_together, aes(`Processing tank`, mean_TPM, color = MAG_id)) +
+  geom_pointrange(size = 1, aes(ymin = mean_TPM - se_TPM, ymax = mean_TPM + se_TPM)) +
+  geom_line(aes(group = MAG_id)) +
+  xlab("") + ylab("TPM")+
+  theme_bw() +
+  scale_y_continuous(breaks = pretty_breaks(n=4)) +
+  theme(text=element_text(size=30, colour = "black"),
+        axis.text.x = element_text(size = 22, colour = "black", angle = 45, hjust = 1),
+        axis.text.y = element_text(size = 22, colour = "black"),
+        axis.title = element_text(size = 26, face = "bold", colour = "black"),
+        legend.text = element_markdown(size = 26, colour = "black"),
+        legend.title = element_text(size = 26, face ="bold", colour = "black"),
+        legend.position = "right") + labs(color = "MAG")
+
 
 
 ggsave("/user_data/ahd/EPS_PIPELINE/figures/expression/expression_RSEM_Fullscale_population_sum.pdf", summarized_counts_Fullscale, limitsize = FALSE, width = 20, height = 20, dpi = 300)
