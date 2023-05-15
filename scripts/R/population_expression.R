@@ -11,15 +11,15 @@ library(ggtext)
 
 
 # Loading RSEM data
-data_RSEM_counts <- data.table::fread("/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_counts_summarised.tsv")
+data_RSEM_counts <- data.table::fread("/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_counts_summarised.tsv")
 
 
-saveRDS(data_RSEM_counts, file = "/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_counts_summarised.rds")
+saveRDS(data_RSEM_counts, file = "/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_counts_summarised.rds")
 
-data_RSEM_counts <- readRDS(file = "/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_counts_summarised.rds") %>%
+data_RSEM_counts <- readRDS(file = "/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_counts_summarised.rds") %>%
  select(gene_id, `LIB-Glomicave-0189_mRNA.genes.results`:`LIB-Glomicave-0151_resequenced_mRNA.genes.results`)
 
-saveRDS(data_RSEM_counts, file = "/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_counts_EPS_Fullscale.rds")
+saveRDS(data_RSEM_counts, file = "/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_counts_EPS_Fullscale.rds")
 
 metadata <- read_xlsx("/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/metadata_R.xlsx", sheet = 2) %>% 
   group_by(Notes) %>% mutate(id = row_number())
@@ -134,6 +134,8 @@ EPS_table_RSEM_TPM <- EPS_table_RSEM_TPM %>% rename(`Sample#` = id, `Processing 
 saveRDS(EPS_table_RSEM_counts, file = "/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_counts.rds")
 saveRDS(EPS_table_RSEM_TPM, file = "/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_TPM.rds")
 
+EPS_table_RSEM_counts <- readRDS("/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_counts.rds")
+EPS_table_RSEM_TPM <- readRDS("/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_counts.rds")
 
 
 EPS_table_RSEM_summarized_counts <- EPS_table_RSEM_counts %>%
