@@ -7,6 +7,7 @@ library(data.table)
 library(scales)
 library(ggbeeswarm)
 library(ggtext)
+library("ggnewscale")
 `%ni%` <- Negate(`%in%`)
 
 
@@ -136,6 +137,12 @@ saveRDS(EPS_table_RSEM_TPM, file = "/user_data/ahd/EPS_PIPELINE/data/metatranscr
 
 
 
+
+
+
+
+
+
 EPS_table_RSEM_summarized_counts <- EPS_table_RSEM_counts %>%
   filter(MAG_id %in% c("Ega_18-Q3-R5-49_MAXAC.001", "AalW_18-Q3-R10-53_BAT3C.524", "Lyne_18-Q3-R50-59_MAXAC.006", "AalE_18-Q3-R2-46_BATAC.251")) %>%
   group_by(`Sample#`, `Processing tank`, MAG_id) %>%
@@ -176,23 +183,38 @@ EPS_table_RSEM_summarized_together <- counts_TPM_together %>%
          MAG_id = ifelse(MAG_id == "Lyne_18-Q3-R50-59_MAXAC.006", "*Ca.* M. subdominans", MAG_id),
          MAG_id = ifelse(MAG_id == "AalE_18-Q3-R2-46_BATAC.251", "midas_g_461 midas_s_461", MAG_id))
 
+EPS_table_RSEM <- readRDS("/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_Fullscale_RSEM.rds")
 
+EPS_table_filt <- EPS_table_RSEM %>% filter(MAG_id %in% c("Ega_18-Q3-R5-49_MAXAC.001", "AalW_18-Q3-R10-53_BAT3C.524", "Lyne_18-Q3-R50-59_MAXAC.006", "AalE_18-Q3-R2-46_BATAC.251")) %>% 
+  group_by(`Sample#`,`Processing tank`, MAG_id, operon) %>% 
+  summarise(TPM = sum(TPM)) %>% ungroup() %>%
+  group_by(`Processing tank`, MAG_id, operon) %>% 
+  summarise(
+    mean_TPM = mean(TPM),
+    sd_TPM = sd(TPM),
+    n_TPM = n(),
+    se_TPM = sd_TPM/sqrt(n_TPM)
+  ) %>%
+  mutate(MAG_id = ifelse(MAG_id == "Ega_18-Q3-R5-49_MAXAC.001", "*Ca.* P. baldrii", MAG_id),
+         MAG_id = ifelse(MAG_id == "AalW_18-Q3-R10-53_BAT3C.524", "*Ca.* P. hodrii", MAG_id),
+         MAG_id = ifelse(MAG_id == "Lyne_18-Q3-R50-59_MAXAC.006", "*Ca.* M. subdominans", MAG_id),
+         MAG_id = ifelse(MAG_id == "AalE_18-Q3-R2-46_BATAC.251", "midas_g_461 midas_s_461", MAG_id))
 
-summarized_counts_Fullscale_count <- ggplot(EPS_table_RSEM_summarized_together, aes(`Processing tank`, mean_count, color = MAG_id)) +
-  geom_pointrange(size = 1, aes(ymin = mean_count - se_count, ymax = mean_count + se_count)) +
-  geom_line(aes(group = MAG_id)) +
-  xlab("") + ylab("Expected count")+
-  theme_bw() +
-  scale_y_continuous(breaks = pretty_breaks(n=4)) +
-  theme(text=element_text(size=30, colour = "black"),
-        axis.text.x = element_text(size = 22, colour = "black", angle = 45, hjust = 1),
-        axis.text.y = element_text(size = 22, colour = "black"),
-        axis.title = element_text(size = 26, face = "bold", colour = "black"),
-        legend.text = element_markdown(size = 26, colour = "black"),
-        legend.title = element_text(size = 26, face ="bold", colour = "black"),
-        legend.position = "right") +
-  guides(color = guide_legend(override.aes = list(size = 5),
-  )) + labs(color = "MAG")
+# summarized_counts_Fullscale_count <- ggplot(EPS_table_RSEM_summarized_together, aes(`Processing tank`, mean_count, color = MAG_id)) +
+#   geom_pointrange(size = 1, aes(ymin = mean_count - se_count, ymax = mean_count + se_count)) +
+#   geom_line(aes(group = MAG_id)) +
+#   xlab("") + ylab("Expected count")+
+#   theme_bw() +
+#   scale_y_continuous(breaks = pretty_breaks(n=4)) +
+#   theme(text=element_text(size=30, colour = "black"),
+#         axis.text.x = element_text(size = 22, colour = "black", angle = 45, hjust = 1),
+#         axis.text.y = element_text(size = 22, colour = "black"),
+#         axis.title = element_text(size = 26, face = "bold", colour = "black"),
+#         legend.text = element_markdown(size = 26, colour = "black"),
+#         legend.title = element_text(size = 26, face ="bold", colour = "black"),
+#         legend.position = "right") +
+#   guides(color = guide_legend(override.aes = list(size = 5),
+#   )) + labs(color = "MAG")
 
 summarized_counts_Fullscale_TPM <- ggplot(EPS_table_RSEM_summarized_together, aes(`Processing tank`, mean_TPM, color = MAG_id)) +
   geom_pointrange(size = 1, aes(ymin = mean_TPM - se_TPM, ymax = mean_TPM + se_TPM)) +
@@ -206,7 +228,9 @@ summarized_counts_Fullscale_TPM <- ggplot(EPS_table_RSEM_summarized_together, ae
         axis.title = element_text(size = 26, face = "bold", colour = "black"),
         legend.text = element_markdown(size = 26, colour = "black"),
         legend.title = element_text(size = 26, face ="bold", colour = "black"),
-        legend.position = "right") + labs(color = "MAG")
+        legend.position = "right") + labs(color = "MAG") +
+  geom_pointrange(size = 1, aes(ymin = mean_TPM - se_TPM, ymax = mean_TPM + se_TPM)) +
+  geom_line(aes(group = MAG_id))
 
 
 
