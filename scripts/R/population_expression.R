@@ -156,12 +156,12 @@ EPS_table_RSEM_summarized_TPM <- EPS_table_RSEM_TPM %>%
 saveRDS(EPS_table_RSEM_summarized_counts, file = "/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_counts_summarized_selected.rds")
 saveRDS(EPS_table_RSEM_summarized_TPM, file = "/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_TPM_summarized_selected.rds")
 
-EPS_table_RSEM_summarized_counts <-readRDS("/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_counts_summarized_selected.rds")
+# EPS_table_RSEM_summarized_counts <-readRDS("/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_counts_summarized_selected.rds")
 EPS_table_RSEM_summarized_TPM <- readRDS("/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_RSEM_TPM_summarized_selected.rds")
 
-counts_TPM_together <- EPS_table_RSEM_summarized_counts %>% left_join(EPS_table_RSEM_summarized_TPM)
+#counts_TPM_together <- EPS_table_RSEM_summarized_counts %>% left_join(EPS_table_RSEM_summarized_TPM)
 
-EPS_table_RSEM_summarized_together <- counts_TPM_together %>%
+EPS_table_RSEM_summarized_TPM <- EPS_table_RSEM_summarized_TPM %>%
   mutate(
     `Processing tank` = str_replace(`Processing tank`, "Full-scale measurements aerobic stage", "Aerobic stage"),
     `Processing tank` = str_replace(`Processing tank`, "Full-scale measurements sidestream tank 1", "Sidestream tank 1"),
@@ -169,10 +169,10 @@ EPS_table_RSEM_summarized_together <- counts_TPM_together %>%
     `Processing tank` = str_replace(`Processing tank`, "Full-scale measurements return sludge", "Return sludge"),
     `Processing tank` = str_replace(`Processing tank`, "Full-scale measurements anoxic stage", "Anoxic stage")) %>%
   group_by(`Processing tank`, MAG_id) %>% summarise(
-    mean_count = mean(expected_count),
-    sd_count = sd(expected_count),
-    n_count = n(),
-    se_count = sd_count/sqrt(n_count),
+    # mean_count = mean(expected_count),
+    # sd_count = sd(expected_count),
+    # n_count = n(),
+    # se_count = sd_count/sqrt(n_count),
     mean_TPM = mean(TPM),
     sd_TPM = sd(TPM),
     n_TPM = n(),
@@ -181,7 +181,16 @@ EPS_table_RSEM_summarized_together <- counts_TPM_together %>%
   mutate(MAG_id = ifelse(MAG_id == "Ega_18-Q3-R5-49_MAXAC.001", "*Ca.* P. baldrii", MAG_id),
          MAG_id = ifelse(MAG_id == "AalW_18-Q3-R10-53_BAT3C.524", "*Ca.* P. hodrii", MAG_id),
          MAG_id = ifelse(MAG_id == "Lyne_18-Q3-R50-59_MAXAC.006", "*Ca.* M. subdominans", MAG_id),
-         MAG_id = ifelse(MAG_id == "AalE_18-Q3-R2-46_BATAC.251", "midas_g_461 midas_s_461", MAG_id))
+         MAG_id = ifelse(MAG_id == "AalE_18-Q3-R2-46_BATAC.251", "midas_g_461 midas_s_461", MAG_id),
+         operon = NA) %>% 
+  mutate(`Processing tank` = ifelse(`Processing tank` == "Anoxic stage", "Anoxic", `Processing tank`),
+                                 `Processing tank` = ifelse(`Processing tank` == "Aerobic stage", "Aerobic", `Processing tank`),
+                                 `Processing tank` = ifelse(`Processing tank` == "Return sludge", "RS", `Processing tank`),
+                                 `Processing tank` = ifelse(`Processing tank` == "Sidestream tank 1", "ST1", `Processing tank`),
+                                 `Processing tank` = ifelse(`Processing tank` == "Sidestream tank 2", "ST2", `Processing tank`))
+EPS_table_RSEM_summarized_TPM$`Processing tank` <- factor(EPS_table_RSEM_summarized_TPM$`Processing tank`,levels = 
+                                             c("Anoxic", "Aerobic", "RS", "ST1", "ST2"))
+
 
 EPS_table_RSEM <- readRDS("/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_table_Fullscale_RSEM.rds")
 
@@ -198,7 +207,15 @@ EPS_table_filt <- EPS_table_RSEM %>% filter(MAG_id %in% c("Ega_18-Q3-R5-49_MAXAC
   mutate(MAG_id = ifelse(MAG_id == "Ega_18-Q3-R5-49_MAXAC.001", "*Ca.* P. baldrii", MAG_id),
          MAG_id = ifelse(MAG_id == "AalW_18-Q3-R10-53_BAT3C.524", "*Ca.* P. hodrii", MAG_id),
          MAG_id = ifelse(MAG_id == "Lyne_18-Q3-R50-59_MAXAC.006", "*Ca.* M. subdominans", MAG_id),
-         MAG_id = ifelse(MAG_id == "AalE_18-Q3-R2-46_BATAC.251", "midas_g_461 midas_s_461", MAG_id))
+         MAG_id = ifelse(MAG_id == "AalE_18-Q3-R2-46_BATAC.251", "midas_g_461 midas_s_461", MAG_id)) %>%
+  mutate(`Processing tank` = ifelse(`Processing tank` == "Anoxic stage", "Anoxic", `Processing tank`),
+         `Processing tank` = ifelse(`Processing tank` == "Aerobic stage", "Aerobic", `Processing tank`),
+         `Processing tank` = ifelse(`Processing tank` == "Return sludge", "RS", `Processing tank`),
+         `Processing tank` = ifelse(`Processing tank` == "Sidestream tank 1", "ST1", `Processing tank`),
+         `Processing tank` = ifelse(`Processing tank` == "Sidestream tank 2", "ST2", `Processing tank`))
+
+EPS_table_filt$`Processing tank` <- factor(EPS_table_filt$`Processing tank`,levels = 
+                                             c("Anoxic", "Aerobic", "RS", "ST1", "ST2"))
 
 # summarized_counts_Fullscale_count <- ggplot(EPS_table_RSEM_summarized_together, aes(`Processing tank`, mean_count, color = MAG_id)) +
 #   geom_pointrange(size = 1, aes(ymin = mean_count - se_count, ymax = mean_count + se_count)) +
@@ -216,23 +233,35 @@ EPS_table_filt <- EPS_table_RSEM %>% filter(MAG_id %in% c("Ega_18-Q3-R5-49_MAXAC
 #   guides(color = guide_legend(override.aes = list(size = 5),
 #   )) + labs(color = "MAG")
 
-summarized_counts_Fullscale_TPM <- ggplot(EPS_table_RSEM_summarized_together, aes(`Processing tank`, mean_TPM, color = MAG_id)) +
+operon_plot <- ggplot(EPS_table_filt, aes(`Processing tank`, mean_TPM, color = MAG_id, shape = operon)) +
+  geom_pointrange(size = 1, aes(ymin = mean_TPM - se_TPM, ymax = mean_TPM + se_TPM)) +
+  geom_line(aes(group = interaction(MAG_id, operon))) +
+  xlab("") + ylab("TPM") +
+  theme_bw() +
+  scale_y_continuous(trans = "log10") +
+  theme(text=element_text(size=30, colour = "black"),
+        axis.text.x = element_text(size = 22, colour = "black", angle = 45, hjust = 1),
+        axis.text.y = element_text(size = 22, colour = "black"),
+        axis.title = element_blank(),
+        legend.text = element_markdown(size = 26, colour = "black"),
+        legend.title = element_text(size = 26, face ="bold", colour = "black"),
+        legend.position = "right") + labs(color = "exoPS", shape = "MAG")
+
+species_plot <- ggplot(EPS_table_RSEM_summarized_TPM, aes(`Processing tank`, mean_TPM, color = MAG_id)) +
   geom_pointrange(size = 1, aes(ymin = mean_TPM - se_TPM, ymax = mean_TPM + se_TPM)) +
   geom_line(aes(group = MAG_id)) +
-  xlab("") + ylab("TPM")+
+  xlab("") + ylab("TPM") +
   theme_bw() +
-  scale_y_continuous(breaks = pretty_breaks(n=4)) +
+  scale_y_continuous(trans = "log10") +
   theme(text=element_text(size=30, colour = "black"),
         axis.text.x = element_text(size = 22, colour = "black", angle = 45, hjust = 1),
         axis.text.y = element_text(size = 22, colour = "black"),
         axis.title = element_text(size = 26, face = "bold", colour = "black"),
         legend.text = element_markdown(size = 26, colour = "black"),
         legend.title = element_text(size = 26, face ="bold", colour = "black"),
-        legend.position = "right") + labs(color = "MAG") +
-  geom_pointrange(size = 1, aes(ymin = mean_TPM - se_TPM, ymax = mean_TPM + se_TPM)) +
-  geom_line(aes(group = MAG_id))
+        legend.position = "none")
 
+species_operon_plot <- species_plot + operon_plot
 
-
-ggsave("/user_data/ahd/EPS_PIPELINE/figures/expression/expression_RSEM_Fullscale_population_sum.pdf", summarized_counts_Fullscale, limitsize = FALSE, width = 20, height = 20, dpi = 300)
+ggsave("/mnt/ahd/EPS_PIPELINE/figures/expression/expression_RSEM_Fullscale_species_operon.png", species_operon_plot, limitsize = FALSE, width = 30, height = 20, dpi = 300)
 
