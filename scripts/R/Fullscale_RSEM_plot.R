@@ -1,3 +1,5 @@
+## Creates an .rds object with all the genes in detected EPS gene clusters, not just the ones detected by the queries
+
 library(tidyverse)
 library(ggplot2)
 library(readxl)

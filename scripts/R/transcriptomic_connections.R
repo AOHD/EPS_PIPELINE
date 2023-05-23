@@ -68,7 +68,7 @@ expression_phylogeny_plural <- function(eps, legend = "right", limits = c(1, NA)
     mutate(
       genus = str_replace_all(genus, 
                               pattern = "Ca_", 
-                              replacement = "Ca. ") ,
+                              replacement = "\\*Ca.\\* ") ,
       species = str_replace_all(species,
                                 pattern = "Ca_*_",
                                 replacement = ""),
@@ -105,17 +105,19 @@ expression_phylogeny_plural <- function(eps, legend = "right", limits = c(1, NA)
       genus = ifelse(label %in% c("AalE_18-Q3-R2-46_BAT3C.188", "AalW_18-Q3-R10-53_BAT3C.524", "Bjer_18-Q3-R1-45_BAT3C.93",
                                   "Ega_18-Q3-R5-49_MAXAC.001", "EsbW_18-Q3-R4-48_BAT3C.295", "Hirt_18-Q3-R61-65_BAT3C.386",
                                   "Hjor_18-Q3-R7-51_BAT3C.81_sub", "Hjor_18-Q3-R7-51_MAXAC.088", "Mari_18-Q3-R65-66_BAT3C.41",
-                                  "Ribe_18-Q3-R11-54_MAXAC.001"), "Ca. Phosphoribacter", genus),
+                                  "Ribe_18-Q3-R11-54_MAXAC.001"), "*Ca.* Phosphoribacter", genus),
       species = ifelse(label %in% c("EsbW_18-Q3-R4-48_BAT3C.295", "AalW_18-Q3-R10-53_BAT3C.524", "Bjer_18-Q3-R1-45_BAT3C.93"), "baldrii", species),
       species = ifelse(label %in% c("AalE_18-Q3-R2-46_BAT3C.188", "Ega_18-Q3-R5-49_MAXAC.001", "Ribe_18-Q3-R11-54_MAXAC.001"), "hodrii", species),
       species = ifelse(label %in% c("Hirt_18-Q3-R61-65_BAT3C.386"), "Pbr3", species),
       species = ifelse(label %in% c("Hjor_18-Q3-R7-51_MAXAC.088"), "Pbr4", species),
       species = ifelse(label %in% c("Hjor_18-Q3-R7-51_BAT3C.81_sub"), "Pbr5", species),
       species = ifelse(label %in% c("Mari_18-Q3-R65-66_BAT3C.41"), "Pbr6", species),
-      genus = ifelse(species == "midas_s_45", "Lutibacillus", genus),
-      species = ifelse(species == "midas_s_45", "vidarii", species)
-      
-    ) %>% as.treedata()
+      genus = ifelse(species == "midas_s_45", "*Ca.* Lutibacillus", genus),
+      species = ifelse(species == "midas_s_45", "vidarii", species),
+      genus = ifelse(str_detect(genus, "Ca.|midas"), genus, paste0("*",genus,"*")),
+      species = ifelse(str_detect(species, "midas") | str_detect(genus, "Ca."), species, paste0("*",species,"*"))
+    ) %>%
+    as.treedata()
 
   rel_abun_tree <- EPS_table_RSEM %>% 
     mutate(label = substring(gene_id, 1, nchar(gene_id) - 6)) %>% ungroup() %>%
@@ -139,7 +141,7 @@ expression_phylogeny_plural <- function(eps, legend = "right", limits = c(1, NA)
     xlim_tree(1) +
     ggtitle(title) +
     theme(
-      plot.title = element_text(size = 30)
+      plot.title = element_markdown(size = 40)
     )
   
   rel_abun_tree <- rel_abun_tree %>% select(-`Relative abundance (%)`) %>% 
@@ -159,7 +161,7 @@ expression_phylogeny_plural <- function(eps, legend = "right", limits = c(1, NA)
     scale_size_continuous(range = c(1, 15)) +
     theme(axis.line = element_blank(),
           panel.border = element_blank(),
-          axis.text.y = element_text(colour = "Black", size = 30),
+          axis.text.y = element_markdown(colour = "Black", size = 30),
           axis.ticks.y = element_blank(),
           axis.ticks.x = element_blank(),
           axis.title.y = element_blank(),
@@ -167,7 +169,7 @@ expression_phylogeny_plural <- function(eps, legend = "right", limits = c(1, NA)
           plot.title = element_text(size = 35),
           axis.text.x = element_blank(),
           legend.text = element_text(size = 30),
-          legend.title = element_text(size = 35)
+          legend.title = element_markdown(size = 35)
     )
   
   EPS_plot <- ggplot(EPS_table_filt_plot, aes(`Processing tank`, label, size = TPM)) +
@@ -184,7 +186,7 @@ expression_phylogeny_plural <- function(eps, legend = "right", limits = c(1, NA)
           plot.title = element_text(size = 35),
           axis.text.x = element_text(size = 30, color = "Black", angle = 30),
           legend.text = element_text(size = 30),
-          legend.title = element_text(size = 35)
+          legend.title = element_markdown(size = 35)
           )
   
   MAG_TPM_plot <- ggplot(EPS_table_filt_plot, aes(`Processing tank`, label, size = TPM/`Relative abundance (%)`)) +
@@ -205,7 +207,7 @@ expression_phylogeny_plural <- function(eps, legend = "right", limits = c(1, NA)
     ) +
     guides(size=guide_legend(title="MAG-normalized TPM"))
   
-  heattree <- EPS_plot %>% insert_left(abun_plot, width = 0.2) %>% insert_left(tree_plot, width = 0.5) %>% insert_right(MAG_TPM_plot)
+  heattree <- EPS_plot %>% insert_left(abun_plot, width = 0.2) %>% insert_left(tree_plot, width = 1) %>% insert_right(MAG_TPM_plot)
   
   return(heattree)
   
@@ -278,9 +280,9 @@ S88 <- expression_phylogeny_plural(eps = "S88", title = "S88", offset = 0.01)
 
 ggsave("/mnt/ahd/EPS_PIPELINE/figures/expression_connection/S88_new.pdf", S88, limitsize = FALSE, width = 30, height = 18, dpi = 300)
 
-CelluloseIII <- expression_phylogeny_plural(eps = "Cellulose III", title = "Cellulose III", offset = 0.01)
-
-ggsave("/mnt/ahd/EPS_PIPELINE/figures/expression_connection/CelluloseIII_new.pdf", CelluloseIII, limitsize = FALSE, width = 30, height = 18, dpi = 300)
+# CelluloseIII <- expression_phylogeny_plural(eps = "Cellulose III", title = "Cellulose III", offset = 0.01)
+# 
+# ggsave("/mnt/ahd/EPS_PIPELINE/figures/expression_connection/CelluloseIII_new.pdf", CelluloseIII, limitsize = FALSE, width = 30, height = 18, dpi = 300)
 
 Sphingans <- expression_phylogeny_plural(eps = c("S88", "Diutan", "Gellan 2"), title = "Sphingans\n(S88, Diutan, Gellan)", offset = 0.01)
 
