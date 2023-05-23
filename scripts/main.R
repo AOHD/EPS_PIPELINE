@@ -179,7 +179,7 @@ plot_operon("glucorhamnan", width = 1, plot_title = "Glucorhamnan")
 # mags = c("Ega_18-Q3-R5-49_MAXAC.001", "AalW_18-Q3-R10-53_BAT3C.524", "AalE_18-Q3-R2-46_BATAC.251"), limits = c(0.1, NA))
 
 plot_operon("stewartan", width = 1.75, expression = TRUE, article_plot_domain = TRUE,
-            name_addon = "_expressers_domains", query_title ="Stewartan operons with significant expression",
+            name_addon = "_expressers_domains", query_title ="Stewartan gene clusters with significant expression",
             mags = c("Ega_18-Q3-R5-49_MAXAC.001", "AalW_18-Q3-R10-53_BAT3C.524", "AalE_18-Q3-R2-46_BATAC.251"), limits = c(1, NA))
 
 # plot_operon("HA_streptococcus", width = 1, expression = TRUE, name_addon = "_expressers", query_title = "HA (has) operons with significant expression",
@@ -187,7 +187,7 @@ plot_operon("stewartan", width = 1.75, expression = TRUE, article_plot_domain = 
 #          "Fred_18-Q3-R57-64_BATAC.284", "glom_0076"), limits = c(0.1, NA))
 
 plot_operon("HA_streptococcus", width = 1.75, expression = TRUE, article_plot_domain = TRUE,
-            name_addon = "_expressers_domains", query_title = "HA (has) operons with significant expression",
+            name_addon = "_expressers_domains", query_title = "HA (has) gene clusters with significant expression",
             mags = c("Viby_18-Q3-R106-67_BAT3C.52", "Lyne_18-Q3-R50-59_MAXAC.006", "glom_0465", "Ega_18-Q3-R5-49_MAXAC.001", "glom_0297",
                      "Fred_18-Q3-R57-64_BATAC.284", "glom_0076"), limits = c(1, NA))
 
@@ -197,7 +197,7 @@ plot_operon("HA_streptococcus", width = 1.75, expression = TRUE, article_plot_do
 #             limits = c(0.1, NA))
 
 plot_operon("cellulose", same_database = "cellulose_NA", width = 2, expression = TRUE, article_plot_domain = TRUE,
-            name_addon = "_expressers_anox_domains", query_title = "Unclassified cellulose operons with significant expression",
+            name_addon = "_expressers_anox_domains", query_title = "Unclassified cellulose gene clusters with significant expression",
             mags = c("AalW_18-Q3-R10-53_BAT3C.524", "glom_0454", "glom_0299", "Ega_18-Q3-R5-49_BAT3C.159"), 
             limits = c(1, NA))
 
@@ -207,7 +207,7 @@ plot_operon("cellulose", same_database = "cellulose_NA", width = 2, expression =
 #             limits = c(0.1, 10), Processing_tank = "Sidestream tank 1")
 
 plot_operon("cellulose", same_database = "cellulose_NA", width = 2, expression = TRUE, article_plot_domain = TRUE,
-            name_addon = "_expressers_ST1_domains", query_title = "Unclassified cellulose operons with significant expression",
+            name_addon = "_expressers_ST1_domains", query_title = "Unclassified cellulose gene clusters with significant expression",
             mags = c("AalW_18-Q3-R10-53_BAT3C.524", "glom_0454", "glom_0299", "Ega_18-Q3-R5-49_BAT3C.159"), 
             limits = c(1, NA), Processing_tank = "Sidestream tank 1")
 
@@ -221,7 +221,7 @@ plot_operon("cellulose", same_database = "cellulose_NA", width = 2, expression =
 #             mags = c("glom_0322"), limits = c(0.1, 10), Processing_tank = "Aerobic stage")
 
 plot_operon("alginate", width = 1.5, expression = TRUE, article_plot_domain = TRUE,
-            name_addon = "_expressers_domains", query_title = "Alginate operons with significant expression",
+            name_addon = "_expressers_domains", query_title = "Alginate gene clusters with significant expression",
             mags = c("glom_0322"), limits = c(1, NA), Processing_tank = "Aerobic stage")
 
 
@@ -229,7 +229,7 @@ plot_operon("alginate", width = 1.5, expression = TRUE, article_plot_domain = TR
 #             mags = c("glom_0359", "glom_0465", "Lyne_18-Q3-R50-59_MAXAC.006", "glom_0073"), limits = c(0.1, NA), Processing_tank = "Aerobic stage")
 
 plot_operon("E_faecalis_PS", width = 2.60, expression = TRUE, article_plot_domain = TRUE,
-            name_addon = "_expressers_domains", query_title = "E. faecalis PS operons with significant expression",
+            name_addon = "_expressers_domains", query_title = "E. faecalis PS gene clusters with significant expression",
             mags = c("glom_0359", "glom_0465", "Lyne_18-Q3-R50-59_MAXAC.006", "glom_0073"), limits = c(1, NA), Processing_tank = "Aerobic stage")
 
 # 
@@ -248,7 +248,7 @@ plot_operon("E_faecalis_PS", width = 2.60, expression = TRUE, article_plot_domai
 
 
 plot_operon(c("galactoglucan"), width = 2.60, expression = TRUE, article_plot_domain = TRUE,
-            name_addon = "_expressers_domains", query_title = "Galactoglucan operons with significant expression",
+            name_addon = "_expressers_domains", query_title = "Galactoglucan gene cluster with significant expression",
             mags = c("glom_0359"), 
             limits = c(1, NA))
 

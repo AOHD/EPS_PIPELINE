@@ -625,7 +625,7 @@ plot_operon <-  function(filename_psiblast,
     #genes <- genes %>% filter(!is.na(TPM))
     
     operon_plot <- ggplot(
-      genes, aes(xmin = start, xmax = end, y = paste(mi_phylum, mi_genus, mi_species), forward = Strand, fill = TPM)
+      genes, aes(xmin = start, xmax = end, y = paste(mi_phylum, mi_genus, mi_species), forward = strand, fill = TPM)
     ) +
       # Empty gene arrows
       geom_gene_arrow(
