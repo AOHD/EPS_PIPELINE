@@ -661,7 +661,7 @@ plot_operon <-  function(filename_psiblast,
         #legend.position = "right",
         # legend.direction = "horizontal",
         legend.spacing.x = unit(6, "mm"),
-        legend.text = element_markdown(size = 8),
+        legend.text = element_text(size = 8),
         axis.text.y = element_blank(),
         axis.title.x = element_blank(),
         axis.title.y = element_blank(),
@@ -695,12 +695,12 @@ plot_operon <-  function(filename_psiblast,
         legend.position = "bottom",
         legend.direction = "horizontal",
         legend.spacing.x = unit(6, "mm"),
-        legend.text = element_markdown(size = 12),
+        legend.text = element_text(size = 12),
         axis.text.y = element_blank(),
         axis.title.x = element_blank(),
         axis.title.y = element_blank(),
         legend.background = element_rect(linetype = 1, linewidth = 0.5, colour = 1),
-        title = element_markdown(size = 16)
+        title = element_text(size = 16)
       ) +
       scale_fill_manual(
         values = domain_colors[names(domain_colors) %in% unique(domains_filtered$Domain)], 
