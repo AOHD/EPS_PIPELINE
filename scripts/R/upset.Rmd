@@ -108,7 +108,7 @@ data_upset_all_unique <- data_upset_all %>% group_by(Psiblast) %>% distinct(Targ
 ```{r}
 
 #Ordered list of operons from most to least hit
-hitlist <- c(c("*E. faecalis* PS", "Emulsan", "Unclassified cellulose", "Stewartan", "HA (has)"), "Galactoglucan", "Acetylated cellulose", "Pel", "Cellulose III",  "Colanic Acid", "Alginate", "Methanolan", "Acetan", "Amylovoran", "Succinoglycan", "Levan", "*Vibrio* EPS", "HA (pmHAS)", "Synechan", "S88", "Diutan", "Gellan 2",  "PNAG (pga)", "*B. subtilis* EPS", "GG", "*Burkholderia* EPS", "*B. fragilis* PS B", "Cellulose II", "Xanthan", "Salecan", "Psl", "*L. plantarum* PS", "Cepacian", "*B. fragilis* PS A", "Glucorhamnan")
+hitlist <- c("*E. faecalis* PS", "Emulsan", "Unclassified cellulose", "Stewartan", "HA (has)", "Galactoglucan", "Acetylated cellulose", "Pel", "Cellulose III", "Amylovoran", "Colanic Acid", "Alginate", "Methanolan", "Acetan", "Succinoglycan", "Levan", "Cellulose II", "*Vibrio* EPS", "HA (pmHAS)", "Synechan", "S88", "Diutan", "Gellan 2",  "PNAG (pga)", "*B. subtilis* EPS", "GG", "*Burkholderia* EPS", "*B. fragilis* PS B", "Glucorhamnan", "*L. plantarum* PS", "Cepacian", "Salecan", "Xanthan", "Psl", "*B. fragilis* PS A")
 
 #data_upset_in_region <- data_upset[map_lgl(data_upset$queries, ~length(.x) >= min_genes), ]
 plot_upset <- function(d, sets) {
