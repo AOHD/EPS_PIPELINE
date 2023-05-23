@@ -129,36 +129,36 @@ EPS_table_operons$`Processing tank` <- factor(EPS_table_operons$`Processing tank
                                              c("Anoxic", "Aerobic", "RS", "ST1", "ST2"))
 
 operon_plot <- ggplot(EPS_table_operons, aes(`Processing tank`, mean_TPM_operons, color = MAG_id, shape = operon)) +
-  geom_pointrange(size = 1, aes(ymin = mean_TPM_operons - se_TPM_operons, ymax = mean_TPM_operons + se_TPM_operons)) +
-  geom_line(aes(group = interaction(MAG_id, operon))) +
+  geom_pointrange(size = 1.5, aes(ymin = mean_TPM_operons - se_TPM_operons, ymax = mean_TPM_operons + se_TPM_operons)) +
+  geom_line(linewidth = 2, aes(group = interaction(MAG_id, operon))) +
   xlab("") + ylab("TPM") +
   theme_bw() +
   scale_y_continuous(trans = "log10") +
   theme(text=element_text(size=30, colour = "black"),
-        axis.text.x = element_text(size = 22, colour = "black", angle = 45, hjust = 1),
-        axis.text.y = element_text(size = 22, colour = "black"),
+        axis.text.x = element_text(size = 30, colour = "black", angle = 45, hjust = 1),
+        axis.text.y = element_text(size = 30, colour = "black"),
         axis.title = element_blank(),
-        legend.text = element_markdown(size = 26, colour = "black"),
-        legend.title = element_text(size = 26, face ="bold", colour = "black"),
-        legend.position = "right") + labs(color = "exoPS", shape = "MAG")
+        legend.text = element_markdown(size = 30, colour = "black"),
+        legend.title = element_text(size = 35, face ="bold", colour = "black"),
+        legend.position = "right") + labs(color = "MAG", shape = "exoPS")
 
 species_plot <- ggplot(EPS_table_RSEM_summarized_TPM, aes(`Processing tank`, mean_TPM, color = MAG_id)) +
-  geom_pointrange(size = 1, aes(ymin = mean_TPM - se_TPM, ymax = mean_TPM + se_TPM)) +
-  geom_line(aes(group = MAG_id)) +
+  geom_pointrange(size = 1.5, aes(ymin = mean_TPM - se_TPM, ymax = mean_TPM + se_TPM)) +
+  geom_line(linewidth = 2, aes(group = MAG_id)) +
   xlab("") + ylab("TPM") +
   theme_bw() +
-  scale_y_continuous(trans = "log10") +
+  scale_y_continuous(breaks = c(10000, 25000, 50000), trans = "log10") +
   theme(text=element_text(size=30, colour = "black"),
-        axis.text.x = element_text(size = 22, colour = "black", angle = 45, hjust = 1),
-        axis.text.y = element_text(size = 22, colour = "black"),
-        axis.title = element_text(size = 26, face = "bold", colour = "black"),
-        legend.text = element_markdown(size = 26, colour = "black"),
-        legend.title = element_text(size = 26, face ="bold", colour = "black"),
+        axis.text.x = element_text(size = 30, colour = "black", angle = 45, hjust = 1),
+        axis.text.y = element_text(size = 30, colour = "black"),
+        axis.title = element_text(size = 35, face = "bold", colour = "black"),
+        legend.text = element_markdown(size = 30, colour = "black"),
+        legend.title = element_text(size = 35, face ="bold", colour = "black"),
         legend.position = "none")
 
 species_operon_plot <- species_plot + operon_plot
 
-ggsave("/mnt/ahd/EPS_PIPELINE/figures/expression/expression_RSEM_Fullscale_species_operon.png", species_operon_plot, limitsize = FALSE, width = 30, height = 20, dpi = 300)
+ggsave("/mnt/ahd/EPS_PIPELINE/figures/expression/expression_RSEM_Fullscale_species_operon.pdf", species_operon_plot, limitsize = FALSE, width = 30, height = 20, dpi = 300)
 
 #Operon expression normalized by MAG TPM
 
@@ -180,6 +180,6 @@ normalized_plot <- ggplot(EPS_table_normalized, aes(`Processing tank`, normalize
         axis.title = element_blank(),
         legend.text = element_markdown(size = 26, colour = "black"),
         legend.title = element_text(size = 26, face ="bold", colour = "black"),
-        legend.position = "right") + labs(color = "exoPS", shape = "MAG")
+        legend.position = "right") + labs(color = "MAG", shape = "exoPS")
 
 
