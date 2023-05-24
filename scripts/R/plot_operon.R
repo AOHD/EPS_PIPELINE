@@ -316,7 +316,7 @@ plot_operon <-  function(filename_psiblast,
       ID2 = "Query",
       mi_phylum = "a",
       operon = 0,
-      strand = ifelse(Strand == "+", 1, -1),
+      strand = ifelse(Strand == "+", TRUE, FALSE),
       Query_label = Genename,
     ) %>% 
     filter(Psiblast %in% filename_psiblast) %>% 
@@ -355,7 +355,7 @@ plot_operon <-  function(filename_psiblast,
       title = glue("**{query_title}**"),
       mi_phylum = "a",
       operon = 0,
-      strand = ifelse(Strand == "+", 1, -1),
+      strand = ifelse(Strand == "+", TRUE, FALSE),
       start = Start,
       end = End
     ) %>% 
@@ -462,6 +462,7 @@ plot_operon <-  function(filename_psiblast,
     return(y)
   }
   genes <- update_title(genes)
+  
   
   
   if (article_plot_domain == TRUE) {
