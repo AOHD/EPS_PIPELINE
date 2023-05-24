@@ -274,7 +274,8 @@ plot_operon <-  function(filename_psiblast,
       start_target_plot = ifelse(reverse, 2*operon_middle - start_target_plot, start_target_plot) - min_operon,
       end_target_plot = ifelse(reverse, 2*operon_middle - end_target_plot, end_target_plot) - min_operon,
       end = end - min_operon,
-      start = start - min_operon
+      start = start - min_operon,
+      strand = ifelse(strand == 1, TRUE, FALSE)
     ) %>% 
     select(-reverse, -operon_middle)
   
