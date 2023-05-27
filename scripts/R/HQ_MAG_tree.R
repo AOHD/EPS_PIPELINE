@@ -431,8 +431,8 @@ plot_operon_HQ_mag_original <- function(proxi = psi_proxi_filt_all, savename = "
     # perc_and_proxi_fruit_layers(proxi %>% filter(Pathway == "Synthase-dependent"), title = "Synthase-dependent") +
     perc_and_proxi_fruit_layers(proxi %>% filter(Pathway == "Wzx/Wzy-dependent"), title = "Wzx/Wzy-dependent") +
     # perc_and_proxi_fruit_layers(proxi %>% filter(Pathway == "Sucrase-dependent"), title = "Sucrase-dependent") +
-    ggtree::hexpand(1, -1) +
-    ggtree::hexpand(1, 1) +
+    ggtree::vexpand(1, -1) +
+    ggtree::vexpand(1, 1) +
      scale_y_reverse() + 
      coord_flip(clip = "off")  +
     theme(legend.position="none")
