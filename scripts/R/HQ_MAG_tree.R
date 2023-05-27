@@ -49,20 +49,20 @@ colnames(psi_perc_filt) <- psi_perc_filt %>% colnames() %>%
   str_replace("NulO_merged", "NulO") %>% 
   str_replace("pel_merged", "Pel (10)") %>% 
   str_replace("pnag_pga", "PNAG (pga) (8)") %>% 
-  str_replace("B_subtilis_EPS", "*B. subtilis* EPS (4)") %>% 
+  str_replace("B_subtilis_EPS", "B. subtilis EPS (4)") %>% 
   str_replace("pnag_ica", "PNAG (ica) (0)") %>% 
   str_replace("xanthan", "Xanthan (2)") %>% 
   str_replace("psl", "Psl (2)") %>% 
   str_replace("curdlan", "Curdlan (0)") %>% 
   str_replace("diutan", "Diutan (6)") %>% 
   str_replace("gellan2", "Gellan 2 (6)") %>%
-  str_replace("burkholderia_eps", "*Burkholderia* EPS (3)") %>%
+  str_replace("burkholderia_eps", "Burkholderia EPS (3)") %>%
   str_replace("amylovoran", "Amylovoran (14)") %>%
   str_replace("ColA", "Colanic Acid (6)") %>%
   str_replace("salecan", "Salecan (1)") %>%
   str_replace("stewartan", "Stewartan (34)") %>%
-  str_replace("vps", "*Vibrio* EPS (3)") %>%
-  str_replace("rhizobium_eps", "*Rhizobium* EPS (0)") %>%
+  str_replace("vps", "Vibrio EPS (3)") %>%
+  str_replace("rhizobium_eps", "Rhizobium EPS (0)") %>%
   str_replace("gellan1", "Gellan 1 (0)") %>%
   str_replace("acetan", "Acetan (5)") %>%
   str_replace("s88", "S88 (9)") %>%
@@ -76,20 +76,20 @@ colnames(psi_perc_filt) <- psi_perc_filt %>% colnames() %>%
   str_replace("cellulose_NA", "Unclassified cellulose (96)") %>%
   str_replace("succinoglycan", "Succinoglycan (4)") %>%
   str_replace("galactoglucan", "Galactoglucan (11)") %>%
-  str_replace("B_fragilis_PS_A", "*B. fragilis* PS A (1)") %>%
-  str_replace("B_fragilis_PS_B", "*B. fragilis* PS B (2)") %>%
-  str_replace("B_pseudomallei_EPS", "*B. pseudomallei* PS (0)") %>%
+  str_replace("B_fragilis_PS_A", "B. fragilis PS A (1)") %>%
+  str_replace("B_fragilis_PS_B", "B. fragilis PS B (2)") %>%
+  str_replace("B_pseudomallei_EPS", "B. pseudomallei PS (0)") %>%
   str_replace("cepacian", "Cepacian (1)") %>%
-  str_replace("E_faecalis_PS", "*E. faecalis* PS (37)") %>%
+  str_replace("E_faecalis_PS", "E. faecalis PS (37)") %>%
   str_replace("emulsan", "Emulsan (16)") %>%
   str_replace("EPS273", "EPS273 (0)") %>%
   str_replace("GG", "GG (2)") %>%
   str_replace("glucorhamnan", "Glucorhamnan (2)") %>%
-  str_replace("L_johnsonii_ATCC_33200_EPS_A", "*L. johnsonii* PS A (0)") %>%
-  str_replace("L_johnsonii_ATCC_11506_EPS_B", "*L. johnsonii* PS B (0)") %>%
-  str_replace("L_johnsonii_ATCC_2767_EPS_C", "*L. johnsonii* PS C (0)") %>%
+  str_replace("L_johnsonii_ATCC_33200_EPS_A", "L. johnsonii PS A (0)") %>%
+  str_replace("L_johnsonii_ATCC_11506_EPS_B", "L. johnsonii PS B (0)") %>%
+  str_replace("L_johnsonii_ATCC_2767_EPS_C", "L. johnsonii PS C (0)") %>%
   str_replace("L_lactis_EPS", "L. lactis PS (0)") %>%
-  str_replace("L_plantarum_HePS", "*L. plantarum PS* (1)") %>%
+  str_replace("L_plantarum_HePS", "L. plantarum PS (1)") %>%
   str_replace("phosphonoglycan", "Phosphonoglycan (0)")
 
 
@@ -118,20 +118,20 @@ colnames(psi_proxi_filt) <- psi_proxi_filt %>% colnames() %>%
   str_replace("NulO_merged", "NulO") %>% 
   str_replace("pel_merged", "Pel (10)") %>% 
   str_replace("pnag_pga", "PNAG (pga) (8)") %>% 
-  str_replace("B_subtilis_EPS", "*B. subtilis* EPS (4)") %>% 
+  str_replace("B_subtilis_EPS", "B. subtilis EPS (4)") %>% 
   str_replace("pnag_ica", "PNAG (ica) (0)") %>% 
   str_replace("xanthan", "Xanthan (2)") %>% 
   str_replace("psl", "Psl (2)") %>% 
   str_replace("curdlan", "Curdlan (0)") %>% 
   str_replace("diutan", "Diutan (6)") %>% 
   str_replace("gellan2", "Gellan 2 (6)") %>%
-  str_replace("burkholderia_eps", "*Burkholderia* EPS (3)") %>%
+  str_replace("burkholderia_eps", "Burkholderia EPS (3)") %>%
   str_replace("amylovoran", "Amylovoran (14)") %>%
   str_replace("ColA", "Colanic Acid (6)") %>%
   str_replace("salecan", "Salecan (1)") %>%
   str_replace("stewartan", "Stewartan (34)") %>%
-  str_replace("vps", "*Vibrio* EPS (3)") %>%
-  str_replace("rhizobium_eps", "*Rhizobium* EPS (0)") %>%
+  str_replace("vps", "Vibrio EPS (3)") %>%
+  str_replace("rhizobium_eps", "Rhizobium EPS (0)") %>%
   str_replace("gellan1", "Gellan 1 (0)") %>%
   str_replace("acetan", "Acetan (5)") %>%
   str_replace("s88", "S88 (9)") %>%
@@ -145,20 +145,20 @@ colnames(psi_proxi_filt) <- psi_proxi_filt %>% colnames() %>%
   str_replace("cellulose_NA", "Unclassified cellulose (96)") %>%
   str_replace("succinoglycan", "Succinoglycan (4)") %>%
   str_replace("galactoglucan", "Galactoglucan (11)") %>%
-  str_replace("B_fragilis_PS_A", "*B. fragilis* PS A (1)") %>%
-  str_replace("B_fragilis_PS_B", "*B. fragilis* PS B (2)") %>%
-  str_replace("B_pseudomallei_EPS", "*B. pseudomallei* PS (0)") %>%
+  str_replace("B_fragilis_PS_A", "B. fragilis PS A (1)") %>%
+  str_replace("B_fragilis_PS_B", "B. fragilis PS B (2)") %>%
+  str_replace("B_pseudomallei_EPS", "B. pseudomallei PS (0)") %>%
   str_replace("cepacian", "Cepacian (1)") %>%
-  str_replace("E_faecalis_PS", "*E. faecalis* PS (37)") %>%
+  str_replace("E_faecalis_PS", "E. faecalis PS (37)") %>%
   str_replace("emulsan", "Emulsan (16)") %>%
   str_replace("EPS273", "EPS273 (0)") %>%
   str_replace("GG", "GG (2)") %>%
   str_replace("glucorhamnan", "Glucorhamnan (2)") %>%
-  str_replace("L_johnsonii_ATCC_33200_EPS_A", "*L. johnsonii* PS A (0)") %>%
-  str_replace("L_johnsonii_ATCC_11506_EPS_B", "*L. johnsonii* PS B (0)") %>%
-  str_replace("L_johnsonii_ATCC_2767_EPS_C", "*L. johnsonii* PS C (0)") %>%
+  str_replace("L_johnsonii_ATCC_33200_EPS_A", "L. johnsonii PS A (0)") %>%
+  str_replace("L_johnsonii_ATCC_11506_EPS_B", "L. johnsonii PS B (0)") %>%
+  str_replace("L_johnsonii_ATCC_2767_EPS_C", "L. johnsonii PS C (0)") %>%
   str_replace("L_lactis_EPS", "L. lactis PS (0)") %>%
-  str_replace("L_plantarum_HePS", "*L. plantarum PS* (1)") %>%
+  str_replace("L_plantarum_HePS", "L. plantarum PS (1)") %>%
   str_replace("phosphonoglycan", "Phosphonoglycan (0)")
 
 original_operons <- c("Alginate", "Cellulose I", "Cellulose II", "Curdlan", "Diutan", "HA (has)", "HA (pmHAS)", 
@@ -435,8 +435,7 @@ plot_operon_HQ_mag_original <- function(proxi = psi_proxi_filt_all, savename = "
     ggtree::hexpand(1, 1) +
      scale_y_reverse() + 
      coord_flip(clip = "off")  +
-    theme(legend.position="none",
-          axis.text.x = element_markdown(size=20))
+    theme(legend.position="none")
   
   ggsave(paste0("./figures/trees/HQ_MAG_tree_fan_", savename,".pdf"), width =40, height = 60, limitsize = FALSE, dpi = 150,
          plot = tree_plot
