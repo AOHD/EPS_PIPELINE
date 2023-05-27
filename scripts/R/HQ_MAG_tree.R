@@ -186,12 +186,12 @@ psi_proxi_filt_all <- psi_proxi_filt_all %>%
       name %in% c("Cellulose I", "Cellulose II", "Cellulose III", "Acetylated cellulose", "Unclassified cellulose", "Alginate",
                   "Curdlan", "HA (pmHAS)", "HA (has)", "Pel", "PNAG (ica)", "PNAG (pga)") ~ "Synthase-dependent",
       name == "Phosphonoglycan" ~ "PEP-mutase dependent",
-      TRUE ~ "wzx/wzy-dependent"
+      TRUE ~ "Wzx/Wzy-dependent"
     ),
     color = case_when(
       Pathway == "Sucrase-dependent" ~ "Blue",
       Pathway == "Synthase-dependent" ~ "Green",
-      Pathway == "wzx/wzy-dependent" ~ "Red",
+      Pathway == "Wzx/Wzy-dependent" ~ "Red",
       Pathway == "PEP-mutase dependent" ~ "Purple",
       TRUE ~ "Black"
     )
@@ -383,7 +383,7 @@ perc_and_proxi_fruit_layers <- function(proxi, title){
         geom = geom_tile,
         pwidth = 0.8*length(unique(proxi$name)),
         mapping = aes(y = ID, x = name, fill = value, width = 20, height = 2),
-        axis.params = list(axis = "x", text.size = 20, text.angle = -45, hjust = 0, vjust = 1, 
+        axis.params = list(axis = "x", text.size = 20, text.angle = 45, hjust = 0, vjust = 1, 
                            title = title, title.size = 20),               # axis.params = list(axis = "x", text.size = 2.5, text.angle = -90, hjust = 0, vjust = 0.5),
         grid.params = list(vline = FALSE, color = "black", alpha = 1, size = 0.6),
         offset = 2
@@ -427,16 +427,16 @@ plot_operon_HQ_mag_original <- function(proxi = psi_proxi_filt_all, savename = "
     ) +
     scale_color_manual(guide = "none") +
     # perc_and_proxi_fruit_layers(proxi %>% filter(Pathway == "Synthase-dependent"), title = "Synthase-dependent") +
-    perc_and_proxi_fruit_layers(proxi %>% filter(Pathway == "wzx/wzy-dependent"), title = "wzx/wzy-dependent") +
+    perc_and_proxi_fruit_layers(proxi %>% filter(Pathway == "Wzx/Wzy-dependent"), title = "Wzx/Wzy-dependent") +
     # perc_and_proxi_fruit_layers(proxi %>% filter(Pathway == "Sucrase-dependent"), title = "Sucrase-dependent") +
-    ggtree::vexpand(.3, -1) +
-    ggtree::vexpand(.3, 1) +
-    ggtree::hexpand(.1, 1) +
-    # scale_y_reverse() + 
-    # coord_flip(clip = "off")  +
+    ggtree::hexpand(.3, -1) +
+    ggtree::hexpand(.3, 1) +
+    ggtree::vexpand(.1, 1) +
+     scale_y_reverse() + 
+     coord_flip(clip = "off")  +
     theme(legend.position="none")
   
-  ggsave(paste0("./figures/trees/HQ_MAG_tree_fan_", savename,".pdf"), width = 60, height = 40, limitsize = FALSE, dpi = 150,
+  ggsave(paste0("./figures/trees/HQ_MAG_tree_fan_", savename,".pdf"), width =40, height = 60, limitsize = FALSE, dpi = 150,
          plot = tree_plot
   )
 }
