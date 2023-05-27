@@ -38,7 +38,8 @@ psi_perc_filt <- list.files("./output_proximity_filtration/psi_percID_filt/") %>
 
 psi_perc_filt <- psi_perc_filt %>%
   reduce(full_join, by = "ID") %>%
-  tibble::column_to_rownames(var = "ID")
+  tibble::column_to_rownames(var = "ID")  %>%
+  mutate(`Cellulose I (0)` = NA)
 
 
 
@@ -69,9 +70,9 @@ colnames(psi_perc_filt) <- psi_perc_filt %>% colnames() %>%
   str_replace("levan", "Levan (13)") %>% 
   str_replace("synechan", "Synechan (2)") %>%
   str_replace("methanolan", "Methanolan (5)") %>%
-  str_replace("celluloseI", "Cellulose I (0)") %>% 
-  str_replace("celluloseII", "Cellulose II (7)") %>%
-  str_replace("celluloseIII", "Cellulose III (30)") %>%
+  str_replace("^celluloseI$", "Cellulose I (0)") %>% 
+  str_replace("^celluloseII$", "Cellulose II (7)") %>%
+  str_replace("^celluloseIII$", "Cellulose III (30)") %>%
   str_replace("cellulose_Ac", "Acetylated cellulose (30)") %>%
   str_replace("cellulose_NA", "Unclassified cellulose (96)") %>%
   str_replace("succinoglycan", "Succinoglycan (4)") %>%
@@ -109,7 +110,8 @@ psi_proxi_filt <- list.files("./output_proximity_filtration/psi_proxi_filt/") %>
 
 psi_proxi_filt <- psi_proxi_filt %>%
   reduce(full_join, by = "ID") %>% 
-  tibble::column_to_rownames(var = "ID")
+  tibble::column_to_rownames(var = "ID")  %>%
+  mutate(`Cellulose I (0)` = NA)
 
 colnames(psi_proxi_filt) <- psi_proxi_filt %>% colnames() %>% 
   str_replace("alginate", "Alginate (3)") %>% 
@@ -138,9 +140,9 @@ colnames(psi_proxi_filt) <- psi_proxi_filt %>% colnames() %>%
   str_replace("levan", "Levan (13)") %>% 
   str_replace("synechan", "Synechan (2)") %>%
   str_replace("methanolan", "Methanolan (5)") %>%
-  str_replace("celluloseI", "Cellulose I (0)") %>% 
-  str_replace("celluloseII", "Cellulose II (7)") %>%
-  str_replace("celluloseIII", "Cellulose III (30)") %>%
+  str_replace("^celluloseI$", "Cellulose I (0)") %>% 
+  str_replace("^celluloseII$", "Cellulose II (7)") %>%
+  str_replace("^celluloseIII$", "Cellulose III (30)") %>%
   str_replace("cellulose_Ac", "Acetylated cellulose (30)") %>%
   str_replace("cellulose_NA", "Unclassified cellulose (96)") %>%
   str_replace("succinoglycan", "Succinoglycan (4)") %>%
