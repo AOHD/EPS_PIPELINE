@@ -187,7 +187,7 @@ psi_proxi_filt_all <- psi_proxi_filt_all %>%
       name == "Levan (13)" ~ "Sucrase-dependent",
       name %in% c("Cellulose I (0)", "Cellulose II (7)", "Cellulose III (30)", "Acetylated cellulose (30)", "Unclassified cellulose (96)", "Alginate (3)",
                   "Curdlan (0)", "HA (pmHAS) (4)", "HA (has) (41)", "Pel (10)", "PNAG (ica) (0)", "PNAG (pga) (8)") ~ "Synthase-dependent",
-      name == "Phosphonoglycan (0)" ~ "PEP-mutase dependent",
+      name %in% c("Phosphonoglycan (0)","Cellulose I (0)II", "Cellulose I (0)I") ~ "PEP-mutase dependent",
       TRUE ~ "Wzx/Wzy-dependent"
     ),
     color = case_when(
@@ -383,9 +383,9 @@ perc_and_proxi_fruit_layers <- function(proxi, title){
       geom_fruit(
         data = proxi, 
         geom = geom_tile,
-        pwidth = 0.8*length(unique(proxi$name)),
+        pwidth = 1*length(unique(proxi$name)),
         mapping = aes(y = ID, x = name, fill = value, width = 20, height = 2),
-        axis.params = list(axis = "x", text.size = 20, text.angle = 0, hjust = 0, vjust = 1, 
+        axis.params = list(axis = "x", text.size = 20, text.angle = 0, hjust = 0, vjust = 0, 
                            title = title, title.size = 20),               # axis.params = list(axis = "x", text.size = 2.5, text.angle = -90, hjust = 0, vjust = 0.5),
         grid.params = list(vline = FALSE, color = "black", alpha = 1, size = 0.6),
         offset = 2
@@ -404,7 +404,7 @@ perc_and_proxi_fruit_layers <- function(proxi, title){
 
 # rectangular
 
-plot_operon_HQ_mag_original <- function(proxi = psi_proxi_filt_all, savename = "original", phylumNO = 10, layout = "rectangular"){
+plot_operon_HQ_mag_original <- function(proxi = psi_proxi_filt_all, savename = "original", phylumNO = 8, layout = "rectangular"){
   phylum_displayed <- phylum$phylum %>% table %>% `[`(order(.)) %>% tail(phylumNO) %>% names()
   
   tree_plot <- ggtree(
@@ -431,13 +431,13 @@ plot_operon_HQ_mag_original <- function(proxi = psi_proxi_filt_all, savename = "
     # perc_and_proxi_fruit_layers(proxi %>% filter(Pathway == "Synthase-dependent"), title = "Synthase-dependent") +
     perc_and_proxi_fruit_layers(proxi %>% filter(Pathway == "Wzx/Wzy-dependent"), title = "Wzx/Wzy-dependent") +
     # perc_and_proxi_fruit_layers(proxi %>% filter(Pathway == "Sucrase-dependent"), title = "Sucrase-dependent") +
-    ggtree::vexpand(1, -1) +
-    ggtree::vexpand(1, 1) +
+    ggtree::vexpand(0.6, -1) +
+    ggtree::vexpand(0.2, 1) +
      scale_y_reverse() + 
      coord_flip(clip = "off")  +
     theme(legend.position="none")
   
-  ggsave(paste0("./figures/trees/HQ_MAG_tree_fan_", savename,".pdf"), width =40, height = 60, limitsize = FALSE, dpi = 150,
+  ggsave(paste0("./figures/trees/HQ_MAG_tree_fan_", savename,".pdf"), width =45, height = 60, limitsize = FALSE, dpi = 150,
          plot = tree_plot
   )
 }
