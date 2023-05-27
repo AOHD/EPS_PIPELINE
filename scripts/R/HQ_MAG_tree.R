@@ -415,12 +415,12 @@ plot_operon_HQ_mag_original <- function(proxi = psi_proxi_filt_all, savename = "
     branch.length = "none",
     lwd = 0.5
   ) +
-    # geom_hilight(
-    #   data = filter(tree_tib1, phylum_ancestor != "NA") %>% group_by(phylum_ancestor) %>% filter(node == min(node)) %>%
-    #     rename(Phylum_Ancestor = phylum_ancestor) %>%
-    #     filter(phylum %in% phylum_displayed), 
-    #   aes(node = node), fill = "gray",
-    #   extendto = 4.5, alpha = 0.4) +
+    geom_hilight(
+      data = filter(tree_tib1, phylum_ancestor != "NA") %>% group_by(phylum_ancestor) %>% filter(node == min(node)) %>%
+        rename(Phylum_Ancestor = phylum_ancestor) %>%
+        filter(phylum %in% phylum_displayed),
+      aes(node = node), fill = "gray",
+      extendto = -40.5, alpha = 0.4) +
     geom_cladelab(
       data = filter(tree_tib1, phylum_ancestor != "NA") %>% group_by(phylum_ancestor) %>% filter(node == min(node)) %>%
         filter(phylum %in% phylum_displayed) %>% rename(Phylum = phylum), 

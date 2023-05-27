@@ -265,7 +265,7 @@ plot_operon(c("glucorhamnan"), width = 2.60, expression = TRUE, article_plot_dom
 ##############################################
 source("./scripts/R/HQ_MAG_tree.R")
 
-plot_operon_HQ_mag_original(layout = "rectangular", psi_proxi_filt_all, savename = "rectangular_all_wzxwzy")
+plot_operon_HQ_mag_original(layout = "rectangular", psi_proxi_filt_all, savename = "rectangular_all_synthase_sugar")
 
 
 c(
