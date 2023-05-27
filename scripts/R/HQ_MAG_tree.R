@@ -43,54 +43,54 @@ psi_perc_filt <- psi_perc_filt %>%
 
 
 colnames(psi_perc_filt) <- psi_perc_filt %>% colnames() %>%
-  str_replace("alginate", "Alginate") %>% 
-  str_replace("HA_Pasteurella", "HA (pmHAS)") %>% 
-  str_replace("HA_streptococcus", "HA (has)") %>% 
+  str_replace("alginate", "Alginate (3)") %>% 
+  str_replace("HA_Pasteurella", "HA (pmHAS) (4)") %>% 
+  str_replace("HA_streptococcus", "HA (has) (41)") %>% 
   str_replace("NulO_merged", "NulO") %>% 
-  str_replace("pel_merged", "Pel") %>% 
-  str_replace("pnag_pga", "PNAG (pga)") %>% 
-  str_replace("B_subtilis_EPS", "B. subtilis EPS") %>% 
-  str_replace("pnag_ica", "PNAG (ica)") %>% 
-  str_replace("xanthan", "Xanthan") %>% 
-  str_replace("psl", "Psl") %>% 
-  str_replace("curdlan", "Curdlan") %>% 
-  str_replace("diutan", "Diutan") %>% 
-  str_replace("gellan2", "Gellan2") %>%
-  str_replace("burkholderia_eps", "Burkholderia EPS") %>%
-  str_replace("amylovoran", "Amylovoran") %>%
-  str_replace("ColA", "Colanic Acid") %>%
-  str_replace("salecan", "Salecan") %>%
-  str_replace("stewartan", "Stewartan") %>%
-  str_replace("vps", "Vibrio polysaccharide") %>%
-  str_replace("rhizobium_eps", "Rhizobium EPS") %>%
-  str_replace("gellan1", "Gellan1") %>%
-  str_replace("acetan", "Acetan") %>%
-  str_replace("s88", "s88") %>%
-  str_replace("levan", "Levan") %>% 
-  str_replace("synechan", "Synechan") %>%
-  str_replace("methanolan", "Methanolan") %>%
-  str_replace("celluloseI", "Cellulose I") %>% 
-  str_replace("celluloseII", "Cellulose II") %>%
-  str_replace("celluloseIII", "Cellulose III") %>%
-  str_replace("cellulose_Ac", "Acetylated cellulose") %>%
-  str_replace("cellulose_NA", "Unclassified cellulose") %>%
-  str_replace("succinoglycan", "Succinoglycan") %>%
-  str_replace("galactoglucan", "Galactoglucan") %>%
-  str_replace("B_fragilis_PS_A", "B. fragilis PS A") %>%
-  str_replace("B_fragilis_PS_B", "B. fragilis PS B") %>%
-  str_replace("B_pseudomallei_EPS", "B. pseudomallei PS") %>%
-  str_replace("cepacian", "Cepacian") %>%
-  str_replace("E_faecalis_PS", "E. faecalis PS") %>%
-  str_replace("emulsan", "Emulsan") %>%
-  str_replace("EPS273", "EPS273") %>%
-  str_replace("GG", "GG") %>%
-  str_replace("glucorhamnan", "Glucorhamnan") %>%
-  str_replace("L_johnsonii_ATCC_33200_EPS_A", "L. johnsonii PS A") %>%
-  str_replace("L_johnsonii_ATCC_11506_EPS_B", "L. johnsonii PS B") %>%
-  str_replace("L_johnsonii_ATCC_2767_EPS_C", "L. johnsonii PS C") %>%
-  str_replace("L_lactis_EPS", "L. lactis PS") %>%
-  str_replace("L_plantarum_HePS", "L. plantarum PS") %>%
-  str_replace("phosphonoglycan", "Phosphonoglycan")
+  str_replace("pel_merged", "Pel (10)") %>% 
+  str_replace("pnag_pga", "PNAG (pga) (8)") %>% 
+  str_replace("B_subtilis_EPS", "*B. subtilis* EPS (4)") %>% 
+  str_replace("pnag_ica", "PNAG (ica) (0)") %>% 
+  str_replace("xanthan", "Xanthan (2)") %>% 
+  str_replace("psl", "Psl (2)") %>% 
+  str_replace("curdlan", "Curdlan (0)") %>% 
+  str_replace("diutan", "Diutan (6)") %>% 
+  str_replace("gellan2", "Gellan 2 (6)") %>%
+  str_replace("burkholderia_eps", "*Burkholderia* EPS (3)") %>%
+  str_replace("amylovoran", "Amylovoran (14)") %>%
+  str_replace("ColA", "Colanic Acid (6)") %>%
+  str_replace("salecan", "Salecan (1)") %>%
+  str_replace("stewartan", "Stewartan (34)") %>%
+  str_replace("vps", "*Vibrio* EPS (3)") %>%
+  str_replace("rhizobium_eps", "*Rhizobium* EPS (0)") %>%
+  str_replace("gellan1", "Gellan 1 (0)") %>%
+  str_replace("acetan", "Acetan (5)") %>%
+  str_replace("s88", "S88 (9)") %>%
+  str_replace("levan", "Levan (13)") %>% 
+  str_replace("synechan", "Synechan (2)") %>%
+  str_replace("methanolan", "Methanolan (5)") %>%
+  str_replace("celluloseI", "Cellulose I (0)") %>% 
+  str_replace("celluloseII", "Cellulose II (7)") %>%
+  str_replace("celluloseIII", "Cellulose III (30)") %>%
+  str_replace("cellulose_Ac", "Acetylated cellulose (30)") %>%
+  str_replace("cellulose_NA", "Unclassified cellulose (96)") %>%
+  str_replace("succinoglycan", "Succinoglycan (4)") %>%
+  str_replace("galactoglucan", "Galactoglucan (11)") %>%
+  str_replace("B_fragilis_PS_A", "*B. fragilis* PS A (1)") %>%
+  str_replace("B_fragilis_PS_B", "*B. fragilis* PS B (2)") %>%
+  str_replace("B_pseudomallei_EPS", "*B. pseudomallei* PS (0)") %>%
+  str_replace("cepacian", "Cepacian (1)") %>%
+  str_replace("E_faecalis_PS", "*E. faecalis* PS (37)") %>%
+  str_replace("emulsan", "Emulsan (16)") %>%
+  str_replace("EPS273", "EPS273 (0)") %>%
+  str_replace("GG", "GG (2)") %>%
+  str_replace("glucorhamnan", "Glucorhamnan (2)") %>%
+  str_replace("L_johnsonii_ATCC_33200_EPS_A", "*L. johnsonii* PS A (0)") %>%
+  str_replace("L_johnsonii_ATCC_11506_EPS_B", "*L. johnsonii* PS B (0)") %>%
+  str_replace("L_johnsonii_ATCC_2767_EPS_C", "*L. johnsonii* PS C (0)") %>%
+  str_replace("L_lactis_EPS", "L. lactis PS (0)") %>%
+  str_replace("L_plantarum_HePS", "*L. plantarum PS* (1)") %>%
+  str_replace("phosphonoglycan", "Phosphonoglycan (0)")
 
 
 # Percentage of proximity filtrated genes in each HQ-MAG
@@ -112,52 +112,54 @@ psi_proxi_filt <- psi_proxi_filt %>%
   tibble::column_to_rownames(var = "ID")
 
 colnames(psi_proxi_filt) <- psi_proxi_filt %>% colnames() %>% 
-  str_replace("alginate", "Alginate") %>% 
-  str_replace("HA_Pasteurella", "HA (pmHAS)") %>% 
-  str_replace("HA_streptococcus", "HA (has)") %>% 
+  str_replace("alginate", "Alginate (3)") %>% 
+  str_replace("HA_Pasteurella", "HA (pmHAS) (4)") %>% 
+  str_replace("HA_streptococcus", "HA (has) (41)") %>% 
   str_replace("NulO_merged", "NulO") %>% 
-  str_replace("pel_merged", "Pel") %>% 
-  str_replace("pnag_pga", "PNAG (pga)") %>% 
-  str_replace("B_subtilis_EPS", "B. subtilis EPS") %>% 
-  str_replace("pnag_ica", "PNAG (ica)") %>% 
-  str_replace("psl", "Psl") %>%
-  str_replace("diutan", "Diutan") %>%
-  str_replace("xanthan", "Xanthan") %>%
-  str_replace("gellan2", "Gellan2") %>%
-  str_replace("burkholderia_eps", "Burkholderia EPS") %>%
-  str_replace("amylovoran", "Amylovoran") %>%
-  str_replace("ColA", "Colanic Acid") %>%
-  str_replace("salecan", "Salecan") %>%
-  str_replace("stewartan", "Stewartan") %>%
-  str_replace("vps", "Vibrio polysaccharide") %>%
-  str_replace("acetan", "Acetan") %>%
-  str_replace("s88", "s88") %>% 
-  str_replace("synechan", "Synechan") %>% 
-  str_replace("levan", "Levan") %>%
-  str_replace("methanolan", "Methanolan") %>%
-  str_replace("celluloseI", "Cellulose I") %>% 
-  str_replace("celluloseII", "Cellulose II") %>%
-  str_replace("celluloseIII", "Cellulose III") %>%
-  str_replace("cellulose_Ac", "Acetylated cellulose") %>%
-  str_replace("cellulose_NA", "Unclassified cellulose") %>%
-  str_replace("succinoglycan", "Succinoglycan") %>%
-  str_replace("galactoglucan", "Galactoglucan") %>%
-  str_replace("B_subtilis_EPS", "B. subtilis EPS") %>%
-  str_replace("B_fragilis_PS_A", "B. fragilis PS A") %>%
-  str_replace("B_fragilis_PS_B", "B. fragilis PS B") %>%
-  str_replace("B_pseudomallei_EPS", "B. pseudomallei PS") %>%
-  str_replace("cepacian", "Cepacian") %>%
-  str_replace("E_faecalis_PS", "E. faecalis PS") %>%
-  str_replace("emulsan", "Emulsan") %>%
-  str_replace("EPS273", "EPS273") %>%
-  str_replace("GG", "GG") %>%
-  str_replace("glucorhamnan", "Glucorhamnan") %>%
-  str_replace("L_johnsonii_ATCC_33200_EPS_A", "L. johnsonii PS A") %>%
-  str_replace("L_johnsonii_ATCC_11506_EPS_B", "L. johnsonii PS B") %>%
-  str_replace("L_johnsonii_ATCC_2767_EPS_C", "L. johnsonii PS C") %>%
-  str_replace("L_lactis_EPS", "L. lactis PS") %>%
-  str_replace("L_plantarum_HePS", "L. plantarum PS") %>%
-  str_replace("phosphonoglycan", "Phosphonoglycan")
+  str_replace("pel_merged", "Pel (10)") %>% 
+  str_replace("pnag_pga", "PNAG (pga) (8)") %>% 
+  str_replace("B_subtilis_EPS", "*B. subtilis* EPS (4)") %>% 
+  str_replace("pnag_ica", "PNAG (ica) (0)") %>% 
+  str_replace("xanthan", "Xanthan (2)") %>% 
+  str_replace("psl", "Psl (2)") %>% 
+  str_replace("curdlan", "Curdlan (0)") %>% 
+  str_replace("diutan", "Diutan (6)") %>% 
+  str_replace("gellan2", "Gellan 2 (6)") %>%
+  str_replace("burkholderia_eps", "*Burkholderia* EPS (3)") %>%
+  str_replace("amylovoran", "Amylovoran (14)") %>%
+  str_replace("ColA", "Colanic Acid (6)") %>%
+  str_replace("salecan", "Salecan (1)") %>%
+  str_replace("stewartan", "Stewartan (34)") %>%
+  str_replace("vps", "*Vibrio* EPS (3)") %>%
+  str_replace("rhizobium_eps", "*Rhizobium* EPS (0)") %>%
+  str_replace("gellan1", "Gellan 1 (0)") %>%
+  str_replace("acetan", "Acetan (5)") %>%
+  str_replace("s88", "S88 (9)") %>%
+  str_replace("levan", "Levan (13)") %>% 
+  str_replace("synechan", "Synechan (2)") %>%
+  str_replace("methanolan", "Methanolan (5)") %>%
+  str_replace("celluloseI", "Cellulose I (0)") %>% 
+  str_replace("celluloseII", "Cellulose II (7)") %>%
+  str_replace("celluloseIII", "Cellulose III (30)") %>%
+  str_replace("cellulose_Ac", "Acetylated cellulose (30)") %>%
+  str_replace("cellulose_NA", "Unclassified cellulose (96)") %>%
+  str_replace("succinoglycan", "Succinoglycan (4)") %>%
+  str_replace("galactoglucan", "Galactoglucan (11)") %>%
+  str_replace("B_fragilis_PS_A", "*B. fragilis* PS A (1)") %>%
+  str_replace("B_fragilis_PS_B", "*B. fragilis* PS B (2)") %>%
+  str_replace("B_pseudomallei_EPS", "*B. pseudomallei* PS (0)") %>%
+  str_replace("cepacian", "Cepacian (1)") %>%
+  str_replace("E_faecalis_PS", "*E. faecalis* PS (37)") %>%
+  str_replace("emulsan", "Emulsan (16)") %>%
+  str_replace("EPS273", "EPS273 (0)") %>%
+  str_replace("GG", "GG (2)") %>%
+  str_replace("glucorhamnan", "Glucorhamnan (2)") %>%
+  str_replace("L_johnsonii_ATCC_33200_EPS_A", "*L. johnsonii* PS A (0)") %>%
+  str_replace("L_johnsonii_ATCC_11506_EPS_B", "*L. johnsonii* PS B (0)") %>%
+  str_replace("L_johnsonii_ATCC_2767_EPS_C", "*L. johnsonii* PS C (0)") %>%
+  str_replace("L_lactis_EPS", "L. lactis PS (0)") %>%
+  str_replace("L_plantarum_HePS", "*L. plantarum PS* (1)") %>%
+  str_replace("phosphonoglycan", "Phosphonoglycan (0)")
 
 original_operons <- c("Alginate", "Cellulose I", "Cellulose II", "Curdlan", "Diutan", "HA (has)", "HA (pmHAS)", 
                       "Pel", "PNAG (eps)", "PNAG (ica)", "PNAG (pga)", "Psl", "s88", "Xanthan", "Succinoglycan","Salecan")
@@ -182,10 +184,10 @@ psi_proxi_filt_all <- psi_proxi_filt_all %>%
   ) %>%
   mutate(
     Pathway = case_when(
-      name == "Levan" ~ "Sucrase-dependent",
-      name %in% c("Cellulose I", "Cellulose II", "Cellulose III", "Acetylated cellulose", "Unclassified cellulose", "Alginate",
-                  "Curdlan", "HA (pmHAS)", "HA (has)", "Pel", "PNAG (ica)", "PNAG (pga)") ~ "Synthase-dependent",
-      name == "Phosphonoglycan" ~ "PEP-mutase dependent",
+      name == "Levan (13)" ~ "Sucrase-dependent",
+      name %in% c("Cellulose I (0)", "Cellulose II (7)", "Cellulose III (30)", "Acetylated cellulose (30)", "Unclassified cellulose (96)", "Alginate (3)",
+                  "Curdlan (0)", "HA (pmHAS) (4)", "HA (has) (41)", "Pel (10)", "PNAG (ica) (0)", "PNAG (pga) (8)") ~ "Synthase-dependent",
+      name == "Phosphonoglycan (0)" ~ "PEP-mutase dependent",
       TRUE ~ "Wzx/Wzy-dependent"
     ),
     color = case_when(
@@ -383,7 +385,7 @@ perc_and_proxi_fruit_layers <- function(proxi, title){
         geom = geom_tile,
         pwidth = 0.8*length(unique(proxi$name)),
         mapping = aes(y = ID, x = name, fill = value, width = 20, height = 2),
-        axis.params = list(axis = "x", text.size = 20, text.angle = 45, hjust = 0, vjust = 1, 
+        axis.params = list(axis = "x", text.size = 20, text.angle = 0, hjust = 0, vjust = 1, 
                            title = title, title.size = 20),               # axis.params = list(axis = "x", text.size = 2.5, text.angle = -90, hjust = 0, vjust = 0.5),
         grid.params = list(vline = FALSE, color = "black", alpha = 1, size = 0.6),
         offset = 2
@@ -421,7 +423,7 @@ plot_operon_HQ_mag_original <- function(proxi = psi_proxi_filt_all, savename = "
       data = filter(tree_tib1, phylum_ancestor != "NA") %>% group_by(phylum_ancestor) %>% filter(node == min(node)) %>%
         filter(phylum %in% phylum_displayed) %>% rename(Phylum = phylum), 
       mapping = aes(node = node, label = phylum),
-      angle = 0, barsize = 2,
+      angle = 45, barsize = 2,
       geom = "text", fontsize = 18, horizontal = TRUE,
       align = TRUE, offset.text = 2
     ) +
@@ -429,12 +431,12 @@ plot_operon_HQ_mag_original <- function(proxi = psi_proxi_filt_all, savename = "
     # perc_and_proxi_fruit_layers(proxi %>% filter(Pathway == "Synthase-dependent"), title = "Synthase-dependent") +
     perc_and_proxi_fruit_layers(proxi %>% filter(Pathway == "Wzx/Wzy-dependent"), title = "Wzx/Wzy-dependent") +
     # perc_and_proxi_fruit_layers(proxi %>% filter(Pathway == "Sucrase-dependent"), title = "Sucrase-dependent") +
-    ggtree::hexpand(.3, -1) +
-    ggtree::hexpand(.3, 1) +
-    ggtree::vexpand(.1, 1) +
+    ggtree::hexpand(1, -1) +
+    ggtree::hexpand(1, 1) +
      scale_y_reverse() + 
      coord_flip(clip = "off")  +
-    theme(legend.position="none")
+    theme(legend.position="none",
+          axis.text.x = element_markdown(size=20))
   
   ggsave(paste0("./figures/trees/HQ_MAG_tree_fan_", savename,".pdf"), width =40, height = 60, limitsize = FALSE, dpi = 150,
          plot = tree_plot
