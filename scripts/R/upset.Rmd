@@ -34,68 +34,68 @@ for (file in list.files("/mnt/ahd/EPS_PIPELINE/output_proximity_filtration/psi_o
 data_upset_all <- database_all %>%
   mutate(label = substring(Target_label, 1, nchar(Target_label) - 6)) %>%
   mutate(
-    Psiblast = str_replace(Psiblast, "alginate", "Alginate"),
-    Psiblast = str_replace(Psiblast, "celluloseI", "Cellulose I"),
-    Psiblast = str_replace(Psiblast, "celluloseII", "Cellulose II"),
-    Psiblast = str_replace(Psiblast, "celluloseIII", "Cellulose III"),
-    Psiblast = str_replace(Psiblast, "cellulose_Ac", "Acetylated cellulose"),
-    Psiblast = str_replace(Psiblast, "cellulose_NA", "Unclassified cellulose"),
-    Psiblast = str_replace(Psiblast, "HA_Pasteurella", "HA (pmHAS)"),
-    Psiblast = str_replace(Psiblast, "HA_streptococcus", "HA (has)"),
+    Psiblast = str_replace(Psiblast, "alginate", "Alginate (12)"),
+    Psiblast = str_replace(Psiblast, "^celluloseI$", "Cellulose I (19)"),
+    Psiblast = str_replace(Psiblast, "^celluloseII$", "Cellulose II (19)"),
+    Psiblast = str_replace(Psiblast, "celluloseIII", "Cellulose III (19)"),
+    Psiblast = str_replace(Psiblast, "cellulose_Ac", "Acetylated cellulose (19)"),
+    Psiblast = str_replace(Psiblast, "cellulose_NA", "Unclassified cellulose (19)"),
+    Psiblast = str_replace(Psiblast, "HA_Pasteurella", "HA (pmHAS) (11)"),
+    Psiblast = str_replace(Psiblast, "HA_streptococcus", "HA (has) (3)"),
     Psiblast = str_replace(Psiblast, "NulO_merged", "NulO"),
-    Psiblast = str_replace(Psiblast, "pel_merged", "Pel"),
-    Psiblast = str_replace(Psiblast, "pnag_pga", "PNAG (pga)"),
-    Psiblast = str_replace(Psiblast, "B_subtilis_EPS", "*B. subtilis* EPS"),
-    Psiblast = str_replace(Psiblast, "pnag_ica", "PNAG (ica)"),
-    Psiblast = str_replace(Psiblast, "xanthan", "Xanthan"),
-    Psiblast = str_replace(Psiblast, "psl", "Psl"),
-    Psiblast = str_replace(Psiblast, "curdlan", "Curdlan"),
-    Psiblast = str_replace(Psiblast, "diutan", "Diutan"),
-    Psiblast = str_replace(Psiblast, "succinoglycan", "Succinoglycan"),
-    Psiblast = str_replace(Psiblast, "gellan2", "Gellan 2"),
-    Psiblast = str_replace(Psiblast, "burkholderia_eps", "*Burkholderia* EPS"),
-    Psiblast = str_replace(Psiblast, "amylovoran", "Amylovoran"),
-    Psiblast = str_replace(Psiblast, "ColA", "Colanic Acid"),
-    Psiblast = str_replace(Psiblast, "salecan", "Salecan"),
-    Psiblast = str_replace(Psiblast, "stewartan", "Stewartan"),
-    Psiblast = str_replace(Psiblast, "vps", "*Vibrio* EPS"),
-    Psiblast = str_replace(Psiblast, "rhizobium_eps", "*Rhizobium* EPS"),
-    Psiblast = str_replace(Psiblast, "gellan1", "Gellan1"),
-    Psiblast = str_replace(Psiblast, "acetan", "Acetan"),
-    Psiblast = str_replace(Psiblast, "s88", "S88"),
-    Psiblast = str_replace(Psiblast, "levan", "Levan"),
-    Psiblast = str_replace(Psiblast, "methanolan", "Methanolan"),
-    Psiblast = str_replace(Psiblast, "synechan", "Synechan"),
-    Psiblast = str_replace(Psiblast, "galactoglucan", "Galactoglucan"),
-    Psiblast = str_replace(Psiblast, "succinoglycan", "Succinoglycan"),
-    Psiblast = str_replace(Psiblast, "B_fragilis_PS_A", "*B. fragilis* PS A"),
-    Psiblast = str_replace(Psiblast, "B_fragilis_PS_B", "*B. fragilis* PS B"),
-    Psiblast = str_replace(Psiblast, "B_pseudomallei_EPS", "*B. pseudomallei* PS"),
-    Psiblast = str_replace(Psiblast, "cepacian", "Cepacian"),
-    Psiblast = str_replace(Psiblast, "E_faecalis_PS", "*E. faecalis* PS"),
-    Psiblast = str_replace(Psiblast, "emulsan", "Emulsan"),
-    Psiblast = str_replace(Psiblast, "EPS273", "EPS273"),
-    Psiblast = str_replace(Psiblast, "GG", "GG"),
-    Psiblast = str_replace(Psiblast, "glucorhamnan", "Glucorhamnan"),
-    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_33200_EPS_A", "*L. johnsonii* PS A"),
-    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_11506_EPS_B", "*L. johnsonii* PS B"),
-    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_2767_EPS_C", "*L. johnsonii* PS C"),
-    Psiblast = str_replace(Psiblast, "L_lactis_EPS", "*L. lactis* PS"),
-    Psiblast = str_replace(Psiblast, "L_plantarum_HePS", "*L. plantarum* PS"),
-    Psiblast = str_replace(Psiblast, "phosphonoglycan", "Phosphonoglycan")
+    Psiblast = str_replace(Psiblast, "pel_merged", "Pel (7)"),
+    Psiblast = str_replace(Psiblast, "pnag_pga", "PNAG (pga) (4)"),
+    Psiblast = str_replace(Psiblast, "B_subtilis_EPS", "*B. subtilis* EPS (4)"),
+    Psiblast = str_replace(Psiblast, "pnag_ica", "PNAG (ica) (4)"),
+    Psiblast = str_replace(Psiblast, "xanthan", "Xanthan (12)"),
+    Psiblast = str_replace(Psiblast, "psl", "Psl (12)"),
+    Psiblast = str_replace(Psiblast, "curdlan", "Curdlan (3)"),
+    Psiblast = str_replace(Psiblast, "diutan", "Diutan (20)"),
+    Psiblast = str_replace(Psiblast, "succinoglycan", "Succinoglycan (28)"),
+    Psiblast = str_replace(Psiblast, "gellan2", "Gellan 2 (20)"),
+    Psiblast = str_replace(Psiblast, "burkholderia_eps", "*Burkholderia* EPS (12)"),
+    Psiblast = str_replace(Psiblast, "amylovoran", "Amylovoran (12)"),
+    Psiblast = str_replace(Psiblast, "ColA", "Colanic Acid (19)"),
+    Psiblast = str_replace(Psiblast, "salecan", "Salecan (13)"),
+    Psiblast = str_replace(Psiblast, "stewartan", "Stewartan (12)"),
+    Psiblast = str_replace(Psiblast, "vps", "*Vibrio* EPS (18)"),
+    Psiblast = str_replace(Psiblast, "rhizobium_eps", "*Rhizobium* EPS (19)"),
+    Psiblast = str_replace(Psiblast, "gellan1", "Gellan1 (3)"),
+    Psiblast = str_replace(Psiblast, "acetan", "Acetan (17)"),
+    Psiblast = str_replace(Psiblast, "s88", "S88 (19)"),
+    Psiblast = str_replace(Psiblast, "levan", "Levan (2)"),
+    Psiblast = str_replace(Psiblast, "methanolan", "Methanolan (21)"),
+    Psiblast = str_replace(Psiblast, "synechan", "Synechan (19)"),
+    Psiblast = str_replace(Psiblast, "galactoglucan", "Galactoglucan (21)"),
+    Psiblast = str_replace(Psiblast, "succinoglycan", "Succinoglycan (28)"),
+    Psiblast = str_replace(Psiblast, "B_fragilis_PS_A", "*B. fragilis* PS A (15)"),
+    Psiblast = str_replace(Psiblast, "B_fragilis_PS_B", "*B. fragilis* PS B (30)"),
+    Psiblast = str_replace(Psiblast, "B_pseudomallei_EPS", "*B. pseudomallei* PS (20)"),
+    Psiblast = str_replace(Psiblast, "cepacian", "Cepacian (22)"),
+    Psiblast = str_replace(Psiblast, "E_faecalis_PS", "*E. faecalis* PS (17)"),
+    Psiblast = str_replace(Psiblast, "emulsan", "Emulsan (22)"),
+    Psiblast = str_replace(Psiblast, "EPS273", "EPS273 (16)"),
+    Psiblast = str_replace(Psiblast, "GG", "GG (16)"),
+    Psiblast = str_replace(Psiblast, "glucorhamnan", "Glucorhamnan (23)"),
+    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_33200_EPS_A", "*L. johnsonii* PS A (15)"),
+    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_11506_EPS_B", "*L. johnsonii* PS B (29)"),
+    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_2767_EPS_C", "*L. johnsonii* PS C (23)"),
+    Psiblast = str_replace(Psiblast, "L_lactis_EPS", "*L. lactis* PS (17)"),
+    Psiblast = str_replace(Psiblast, "L_plantarum_HePS", "*L. plantarum* PS (33)"),
+    Psiblast = str_replace(Psiblast, "phosphonoglycan", "Phosphonoglycan (55)")
     )
 
 data_upset_all_unique <- data_upset_all %>% group_by(Psiblast) %>% distinct(Target_label) %>% ungroup() %>%
-  group_by(Target_label) %>%
-  summarise(queries = list(unique(Psiblast))) %>% ungroup() %>%
+group_by(Target_label) %>%
+summarise(queries = list(unique(Psiblast))) %>% ungroup()
   mutate(
     Pathway = case_when(
       queries == "Levan" ~ "Sucrase-dependent",
-      queries %in% c("Cellulose I", "Cellulose II", "Cellulose III", "Acetylated cellulose", "Unclassified cellulose", "Alginate",
+      queries %in% c("Cellulose I (", "Cellulose II", "Cellulose III", "Acetylated cellulose", "Unclassified cellulose", "Alginate",
                      "Curdlan", "HA (pmHAS)", "HA (has)", "Pel", "PNAG (ica)", "PNAG (pga)") ~ "Synthase-dependent",
       queries == "Phosphonoglycan" ~ "PEP-mutase dependent",
       TRUE ~ "wzx/wzy-dependent"
-    ) 
+    )
       )
 
 
@@ -108,17 +108,18 @@ data_upset_all_unique <- data_upset_all %>% group_by(Psiblast) %>% distinct(Targ
 ```{r}
 
 #Ordered list of operons from most to least hit
-hitlist <- c("*E. faecalis* PS", "Emulsan", "Unclassified cellulose", "Stewartan", "HA (has)", "Galactoglucan", "Acetylated cellulose", "Pel", "Cellulose III", "Amylovoran", "Colanic Acid", "Alginate", "Methanolan", "Acetan", "Succinoglycan", "Levan", "Cellulose II", "*Vibrio* EPS", "HA (pmHAS)", "Synechan", "S88", "Diutan", "Gellan 2",  "PNAG (pga)", "*B. subtilis* EPS", "GG", "*Burkholderia* EPS", "*B. fragilis* PS B", "Glucorhamnan", "*L. plantarum* PS", "Cepacian", "Salecan", "Xanthan", "Psl", "*B. fragilis* PS A")
+hitlist <- c("*E. faecalis* PS (17)", "Emulsan (22)", "Unclassified cellulose (19)", "Stewartan (12)", "HA (has) (3)", "Galactoglucan (21)", "Acetylated cellulose (19)", "Pel (7)", "Cellulose III (19)", "Amylovoran (12)", "Colanic Acid (19)", "Alginate (12)", "Methanolan (21)", "Acetan (17)", "Succinoglycan (28)", "Levan (2)", "Cellulose II (19)", "*Vibrio* EPS (18)", "HA (pmHAS) (11)", "Synechan (19)", "S88 (19)", "Diutan (20)", "Gellan 2 (20)",  "PNAG (pga) (4)", "*B. subtilis* EPS (4)", "GG (16)", "*Burkholderia* EPS (12)", "*B. fragilis* PS B (30)", "Glucorhamnan (23)", "*L. plantarum* PS (33)", "Cepacian (22)", "Salecan (13)", "Xanthan (12)", "Psl (12)", "*B. fragilis* PS A (15)")
 
 #data_upset_in_region <- data_upset[map_lgl(data_upset$queries, ~length(.x) >= min_genes), ]
 plot_upset <- function(d, sets) {
     ggplot(d, aes(x = queries)) +
     geom_bar() +
     scale_x_upset(n_intersections = 200, sets=sets) +
-    ylab("") +
+    ylab("PSI-BLAST hits") +
     xlab("") +
     theme(
-      axis.text.y = element_markdown(size = 20)
+      axis.text.y = element_markdown(size = 20),
+      axis.title = element_text(size = 20)
     )
 } 
 
