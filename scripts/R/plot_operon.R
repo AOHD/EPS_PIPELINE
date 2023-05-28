@@ -8,10 +8,7 @@ library("ggnewscale")
 library("ggrepel")
 library("here")
 library("ggtree")
-firstup <- function(x) {
-  substr(x, 1, 1) <- toupper(substr(x, 1, 1))
-  x
-}
+
 
 plot_operon <-  function(filename_psiblast,
                          same_database = FALSE, #Used for cellulose because we filter the same psiblast results for 4 (5) different types
@@ -673,7 +670,14 @@ plot_operon <-  function(filename_psiblast,
                            name = "TPM", na.value = "transparent", limits = limits) +
       ggtitle(paste0(query_title, "\n", Processing_tank))
     
-    domains_filtered <- domains_filtered %>% mutate(TPM = NA) %>% filter(ID2 != "Query")
+    domains_filtered <- domains_filtered %>% 
+      mutate(TPM = NA,
+             mi_phylum = ifelse(ID2 == "Query", "", mi_phylum),
+             mi_class = ifelse(ID2 == "Query", 1, mi_class),
+             mi_order = ifelse(ID2 == "Query", NA, mi_order),
+             mi_family = ifelse(ID2 == "Query", NA, mi_family),
+             mi_genus = ifelse(ID2 == "Query", "", mi_genus),
+             mi_species = ifelse(ID2 == "Query", "Query operon", mi_species)) #%>% filter(ID2 != "Query")
     
     names(domain_colors) <- domains_filtered$Domain %>% unique()
     
