@@ -246,7 +246,163 @@ saveWorkbook(work_book2,
 
 ```
 
+## Creating a text file for all species which express an exoPS
 
+```{r}
+
+proxi <- data.frame(
+  Target_label = as.character(),
+  Query_label = as.character(),
+  Psiblast = as.character()
+)
+
+
+for (file in list.files("/mnt/ahd/EPS_PIPELINE/output_proximity_filtration/psi_proxi_filt")) {
+ temp <- read.csv2(paste0("/mnt/ahd/EPS_PIPELINE/output_proximity_filtration/psi_proxi_filt/",file), sep = "\t") %>% filter(!is.na(Query_label)) %>% select(Target_label, Query_label, Psiblast, operon) %>% mutate(Psiblast = str_sub(file, end = -5)) 
+ 
+proxi <- proxi %>% bind_rows(temp) %>% filter(!is.na(Psiblast))
+
+}
+
+
+proxi_filtered <- proxi %>% mutate(MAG = str_sub(Target_label, end = -7)) %>% 
+  mutate(Psiblast = str_replace(Psiblast, "alginate", "Alginate"),
+    Psiblast = str_replace(Psiblast, "celluloseI", "Cellulose I"),
+    Psiblast = str_replace(Psiblast, "celluloseII", "Cellulose II"),
+    Psiblast = str_replace(Psiblast, "celluloseIII", "Cellulose III"),
+    Psiblast = str_replace(Psiblast, "cellulose_Ac", "Acetylated cellulose"),
+    Psiblast = str_replace(Psiblast, "cellulose_NA", "Unclassified cellulose"),
+    Psiblast = str_replace(Psiblast, "HA_Pasteurella", "HA (pmHAS)"),
+    Psiblast = str_replace(Psiblast, "HA_streptococcus", "HA (has)"),
+    Psiblast = str_replace(Psiblast, "NulO_merged", "NulO"),
+    Psiblast = str_replace(Psiblast, "pel_merged", "Pel"),
+    Psiblast = str_replace(Psiblast, "pnag_pga", "PNAG (pga)"),
+    Psiblast = str_replace(Psiblast, "B_subtilis_EPS", "B. subtilis EPS"),
+    Psiblast = str_replace(Psiblast, "pnag_ica", "PNAG (ica)"),
+    Psiblast = str_replace(Psiblast, "xanthan", "Xanthan"),
+    Psiblast = str_replace(Psiblast, "psl", "Psl"),
+    Psiblast = str_replace(Psiblast, "curdlan", "Curdlan"),
+    Psiblast = str_replace(Psiblast, "diutan", "Diutan"),
+    Psiblast = str_replace(Psiblast, "succinoglycan", "Succinoglycan"),
+    Psiblast = str_replace(Psiblast, "gellan2", "Gellan2"),
+    Psiblast = str_replace(Psiblast, "burkholderia_eps", "Burkholderia EPS"),
+    Psiblast = str_replace(Psiblast, "amylovoran", "Amylovoran"),
+    Psiblast = str_replace(Psiblast, "ColA", "Colanic Acid"),
+    Psiblast = str_replace(Psiblast, "salecan", "Salecan"),
+    Psiblast = str_replace(Psiblast, "stewartan", "Stewartan"),
+    Psiblast = str_replace(Psiblast, "vps", "Vibrio EPS"),
+    Psiblast = str_replace(Psiblast, "rhizobium_eps", "Rhizobium EPS"),
+    Psiblast = str_replace(Psiblast, "gellan1", "Gellan1"),
+    Psiblast = str_replace(Psiblast, "acetan", "Acetan"),
+    Psiblast = str_replace(Psiblast, "s88", "s88"),
+    Psiblast = str_replace(Psiblast, "levan", "Levan"),
+    Psiblast = str_replace(Psiblast, "methanolan", "Methanolan"),
+    Psiblast = str_replace(Psiblast, "synechan", "Synechan"),
+    Psiblast = str_replace(Psiblast, "galactoglucan", "Galactoglucan"),
+    Psiblast = str_replace(Psiblast, "succinoglycan", "Succinoglycan"),
+    Psiblast = str_replace(Psiblast, "B_fragilis_PS_A", "B. fragilis PS A"),
+    Psiblast = str_replace(Psiblast, "B_fragilis_PS_B", "B. fragilis PS B"),
+    Psiblast = str_replace(Psiblast, "B_pseudomallei_EPS", "B. pseudomallei PS"),
+    Psiblast = str_replace(Psiblast, "cepacian", "Cepacian"),
+    Psiblast = str_replace(Psiblast, "E_faecalis_PS", "E. faecalis PS"),
+    Psiblast = str_replace(Psiblast, "emulsan", "Emulsan"),
+    Psiblast = str_replace(Psiblast, "EPS273", "EPS273"),
+    Psiblast = str_replace(Psiblast, "GG", "GG"),
+    Psiblast = str_replace(Psiblast, "glucorhamnan", "Glucorhamnan"),
+    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_33200_EPS_A", "L. johnsonii PS A"),
+    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_11506_EPS_B", "L. johnsonii PS B"),
+    Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_2767_EPS_C", "L. johnsonii PS C"),
+    Psiblast = str_replace(Psiblast, "L_lactis_EPS", "L. lactis PS"),
+    Psiblast = str_replace(Psiblast, "L_plantarum_HePS", "L. plantarum PS"),
+    Psiblast = str_replace(Psiblast, "phosphonoglycan", "Phosphonoglycan")) %>%
+  group_by(MAG) %>% summarise(exoPS = list(unique(Psiblast)))
+
+# proxi_filtered$exoPS <- proxi_filtered$exoPS <- sapply(proxi_filtered$exoPS, function(lst) paste(lst, collapse = ", "))
+
+phylum <- read_tsv("/mnt/ahd/EPS_PIPELINE/data/raw/magstats.tsv") %>%
+  mutate(
+    phylum =   str_extract(midas4_tax, "p:[^,]*"),
+    phylum =   str_remove(phylum, "p:"),
+    
+    class =  str_extract(midas4_tax, "c:[^,]*"),
+    class =  str_remove(class, "c:"),
+    class =  str_remove(class, ";"),
+    
+    order =  str_extract(midas4_tax, "o:[^,]*"),
+    order =  str_remove(order, "o:"),
+    order =  str_remove(order, ";"),
+    
+    family =  str_extract(midas4_tax, "f:[^,]*"),
+    family =  str_remove(family, "f:"),
+    family =  str_remove(family, ";"),
+    
+    genus =  str_extract(midas4_tax, "g:[^,]*"),
+    genus =  str_remove(genus, "g:"),
+    genus =  str_remove(genus, ";"),
+    
+    species = str_extract(midas4_tax, "s:[^,]*"),
+    species = str_remove(species, "s:"),
+    species = str_remove(species, ";"),
+    
+    genus = str_replace_all(genus, 
+                            pattern = "Ca_", 
+                            replacement = "Ca. ") ,
+    species = str_replace_all(species,
+                              pattern = "Ca_*_",
+                              replacement = ""),
+    species = str_replace_all(species,
+                              pattern = "Microthrix_",
+                              replacement = ""),
+    species = str_replace_all(species,
+                              pattern = "Nitrospira_",
+                              replacement = ""),
+    species = str_replace_all(species,
+                              pattern = "Sphingopyxis_",
+                              replacement = ""),
+    species = str_replace_all(species,
+                              pattern = "Phreatobacter_",
+                              replacement = ""),
+    species = str_replace_all(species,
+                              pattern = "Haliscomenobacter_",
+                              replacement = ""),
+    species = str_replace_all(species,
+                              pattern = "Tabrizicola_",
+                              replacement = ""),
+    species = str_replace_all(species,
+                              pattern = "Dechloromonas_",
+                              replacement = ""),
+    species = str_replace_all(species,
+                              pattern = "Amarolinea_",
+                              replacement = ""),
+    species = str_replace_all(species,
+                              pattern = "Methylophosphatis_",
+                              replacement = ""),
+    species = str_replace_all(species,
+                              pattern = "Accumulibacter_",
+                              replacement = ""),
+    genus = ifelse(bin %in% c("AalE_18-Q3-R2-46_BAT3C.188", "AalW_18-Q3-R10-53_BAT3C.524", "Bjer_18-Q3-R1-45_BAT3C.93",
+                                "Ega_18-Q3-R5-49_MAXAC.001", "EsbW_18-Q3-R4-48_BAT3C.295", "Hirt_18-Q3-R61-65_BAT3C.386",
+                                "Hjor_18-Q3-R7-51_BAT3C.81_sub", "Hjor_18-Q3-R7-51_MAXAC.088", "Mari_18-Q3-R65-66_BAT3C.41",
+                                "Ribe_18-Q3-R11-54_MAXAC.001"), "Ca. Phosphoribacter", genus),
+    species = ifelse(bin %in% c("EsbW_18-Q3-R4-48_BAT3C.295", "AalW_18-Q3-R10-53_BAT3C.524", "Bjer_18-Q3-R1-45_BAT3C.93"), "baldrii", species),
+    species = ifelse(bin %in% c("AalE_18-Q3-R2-46_BAT3C.188", "Ega_18-Q3-R5-49_MAXAC.001", "Ribe_18-Q3-R11-54_MAXAC.001"), "hodrii", species),
+    species = ifelse(bin %in% c("Hirt_18-Q3-R61-65_BAT3C.386"), "Pbr3", species),
+    species = ifelse(bin %in% c("Hjor_18-Q3-R7-51_MAXAC.088"), "Pbr4", species),
+    species = ifelse(bin %in% c("Hjor_18-Q3-R7-51_BAT3C.81_sub"), "Pbr5", species),
+    species = ifelse(bin %in% c("Mari_18-Q3-R65-66_BAT3C.41"), "Pbr6", species),
+    genus = ifelse(species == "midas_s_45", "Ca. Lutibacillus", genus),
+    species = ifelse(species == "midas_s_45", "vidarii", species),
+    Taxonomy = paste0(genus, " ", species)
+  ) %>% rename(MAG=bin)
+
+proxi_filtered_phylum <- proxi_filtered %>% left_join(phylum %>% select(MAG, Taxonomy)) %>% select(Taxonomy, exoPS)
+
+write_tsv(proxi_filtered, "/mnt/ahd/EPS_PIPELINE/data/raw/arb_MAG_w_exoPS.txt")
+
+
+
+
+```
 
 
 
