@@ -669,6 +669,7 @@ phylum <- read_tsv("/mnt/ahd/EPS_PIPELINE/data/raw/magstats.tsv") %>%
 
 new_filtered <- new %>%
   mutate(bin = substring(Target_label, 1, nchar(Target_label) - 6)) %>%
+  filter(!grepl("glom", bin)) %>%
   mutate(
     Psiblast = str_replace(Psiblast, "alginate", "Alginate"),
     Psiblast = str_replace(Psiblast, "celluloseI", "Cellulose I"),
@@ -718,7 +719,7 @@ new_filtered <- new %>%
     Psiblast = str_replace(Psiblast, "L_johnsonii_ATCC_2767_EPS_C", "L. johnsonii PS C"),
     Psiblast = str_replace(Psiblast, "L_lactis_EPS", "L. lactis PS"),
     Psiblast = str_replace(Psiblast, "L_plantarum_HePS", "L. plantarum PS"),
-    Psiblast = str_replace(Psiblast, "phosphonoglycan", "Phosphonoglycan")
+    Psiblast = str_replace(Psiblast, "phosphonoglycan", "Phosphonoglycan") 
     ) %>% group_by(operon, bin) %>% distinct(Psiblast) %>% ungroup() %>%
   group_by(bin, Psiblast) %>% summarise(Number = sum(length(Psiblast))) %>% 
   rename(MAG=bin, exoPS=Psiblast, `No. of Copies`=Number)
