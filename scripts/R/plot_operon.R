@@ -440,7 +440,7 @@ plot_operon <-  function(filename_psiblast,
 
   genes <- genes %>% left_join(EPS_table_RSEM_filt, by = "Target_label") %>% 
     mutate(TPM = ifelse(ID2 == "Query", 1, TPM), 
-           mi_species = ifelse(ID2 == "Query", "Query operon", mi_species),
+           mi_species = ifelse(ID2 == "Query", "Query gene cluster", mi_species),
            mi_genus = ifelse(ID2 == "Query", "", mi_genus),
            mi_phylum = ifelse(ID2 == "Query", "", mi_phylum),
            mi_class = ifelse(ID2 == "Query", "1", mi_class))
@@ -677,7 +677,7 @@ plot_operon <-  function(filename_psiblast,
              mi_order = ifelse(ID2 == "Query", NA, mi_order),
              mi_family = ifelse(ID2 == "Query", NA, mi_family),
              mi_genus = ifelse(ID2 == "Query", "", mi_genus),
-             mi_species = ifelse(ID2 == "Query", "Query operon", mi_species)) #%>% filter(ID2 != "Query")
+             mi_species = ifelse(ID2 == "Query", "Query gene cluster", mi_species)) #%>% filter(ID2 != "Query")
     
     names(domain_colors) <- domains_filtered$Domain %>% unique()
     
