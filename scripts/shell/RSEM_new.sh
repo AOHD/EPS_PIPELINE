@@ -1,4 +1,4 @@
-#Preparing the reference for RSEM
+#Preparing the reference for RSEM - this is with Ziville and Caitlin's extra rRNA filtering
 rsem-prepare-reference --bowtie2 /user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/combined.ffn /user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_new/combined.ORFs
 
 #Running rsem-calculate-expression with 8 threads parallel
