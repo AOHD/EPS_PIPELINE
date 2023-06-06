@@ -1,6 +1,6 @@
 data/metatranscriptomics/
 databases/
-EPS_synthesis_in_AS_bacteria-main/
+EPS_synthesis_in_AS_bacteria-main_old/
 figures/
 interproscan_results/
 isolates/
@@ -19,3 +19,4 @@ data/raw/*.xlsx
 .RData
 .Rhistory
 .Rproj.user
+old_pipeline_data/
