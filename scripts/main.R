@@ -126,7 +126,7 @@ proximity_filtration("cepacian",
 source("/mnt/ahd/EPS_PIPELINE/scripts/R/plot_operon.R")
 
 plot_operon("acetan", width = 1, plot_title = "Acetan")
-plot_operon("alginate", width = 1, plot_title = "Alginate")
+plot_operon("alginate", width = 5, plot_title = "Alginate", article_plot_domain = TRUE)
 plot_operon("amylovoran", width = 1, plot_title = "Amylovoran")
 plot_operon("cellulose", width = 1,
             same_database = "cellulose_Ac",
@@ -308,7 +308,9 @@ plot_genes_HQ_mag("celluloseIII", phylumNO = 10)
 # RSEM full-scale expression
 ###############
 
-summarized_RSEM_Fullscale <- ggplot(EPS_table_RSEM_summarized %>% filter(operon %ni% c("NulO", "Xanthan", "Cepacian", "*B. fragilis* PS B")), aes(`Processing tank`, TPM, color = `Processing tank`)) +
+
+
+summarized_RSEM_Fullscale <- ggplot(EPS_table_RSEM_summarized %>% filter(operon %in% c("HA (has)", "Stewartan", "*E. faecalis* PS", "Unclassified cellulose")), aes(`Process tank`, TPM, color = `Process tank`)) +
   geom_beeswarm(cex = 3, size = 3) +
   facet_wrap(~operon, scales = "free", ncol = 4) +
   xlab("") + ylab("TPM")+
@@ -327,5 +329,22 @@ summarized_RSEM_Fullscale <- ggplot(EPS_table_RSEM_summarized %>% filter(operon 
                               ))
 
 
-ggsave("/mnt/ahd/EPS_PIPELINE/figures/expression/expression_RSEM_Fullscale_summarized_sum.pdf", summarized_RSEM_Fullscale, limitsize = FALSE, width = 20, height = 20, dpi = 300)
+barplot <- ggplot(EPS_table_RSEM_summarized_barplot, aes(x = operon, y = mean_TPM)) +
+  geom_col(fill = "orange") +
+  geom_pointrange(size = 0.1, aes(ymin = mean_TPM - se_TPM, ymax = mean_TPM + se_TPM)) +
+  # coord_flip() +
+  theme_bw() +
+  xlab("exoPS") +
+  ylab("Mean TPM") +
+  theme(
+    axis.text.x = element_markdown(angle = 45, vjust = 1, hjust=1)
+  )
+
+
+ggsave("/mnt/ahd/EPS_PIPELINE/figures/expression/expression_RSEM_Fullscale_summarized_sum_selection.pdf", summarized_RSEM_Fullscale, limitsize = FALSE, width = 20, height = 5, dpi = 300)
+
+ggsave("/mnt/ahd/EPS_PIPELINE/figures/expression/expression_RSEM_Fullscale_summarized_barplot.pdf", barplot, limitsize = FALSE, width = 10, height = 5, dpi = 300)
+
+
+
 
