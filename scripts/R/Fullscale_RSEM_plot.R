@@ -168,7 +168,7 @@ EPS_table_RSEM <- gather_RSEM %>% left_join(metadata, by = "Sample_ID") %>% muta
   mutate(MAG_id = str_sub(gene_id, end = -7)) %>%
   left_join(abundance) %>%
   mutate(rel_TPM = TPM/`Relative abundance (%)`) %>%
-  rename(`Processing tank` = Notes)
+  rename(`Process tank` = Notes)
 
 
 
@@ -178,14 +178,14 @@ EPS_table_RSEM <- readRDS("/mnt/ahd/EPS_PIPELINE/data/metatranscriptomics/EPS_ta
 
 
 
-## Summarise by taking the mean of all instances of a given operon per Processing tank per Sample#
+## Summarise by taking the sum of all instances of a given operon per Process tank per Sample#
 
 EPS_table_RSEM_summarized <- EPS_table_RSEM %>%
-  group_by(`Sample#`, `Processing tank`, operon) %>%
+  group_by(`Sample#`, `Process tank`, operon) %>%
   summarise(TPM = sum(TPM)) %>% ungroup()
 
 EPS_table_RSEM_summarized_rel <- EPS_table_RSEM %>%
-  group_by(`Sample#`, `Processing tank`, operon) %>%
+  group_by(`Sample#`, `Process tank`, operon) %>%
   summarise(rel_TPM = sum(rel_TPM)) %>% ungroup()
 
 
@@ -193,10 +193,20 @@ EPS_table_RSEM_summarized$operon <- factor(EPS_table_RSEM_summarized$operon) %>%
 
 EPS_table_RSEM_summarized_rel$operon <- factor(EPS_table_RSEM_summarized_rel$operon) %>% fct_reorder(EPS_table_RSEM_summarized_rel$rel_TPM, .desc = TRUE)
 
-EPS_table_RSEM_summarized$`Processing tank` <- factor(EPS_table_RSEM_summarized$`Processing tank`,levels = 
+EPS_table_RSEM_summarized$`Process tank` <- factor(EPS_table_RSEM_summarized$`Process tank`,levels = 
                                                         c("Anoxic stage", "Aerobic stage", "Return sludge", "Sidestream tank 1", "Sidestream tank 2"))
 
-EPS_table_RSEM_summarized_rel$`Processing tank` <- factor(EPS_table_RSEM_summarized_rel$`Processing tank`,levels = 
+EPS_table_RSEM_summarized_rel$`Process tank` <- factor(EPS_table_RSEM_summarized_rel$`Process tank`,levels = 
                                                         c("Anoxic stage", "Aerobic stage", "Return sludge", "Sidestream tank 1", "Sidestream tank 2"))
 
+## Bar plot for presentation
+
+EPS_table_RSEM_summarized_barplot <- EPS_table_RSEM_summarized %>% filter(`Process tank` == "Aerobic stage") %>%
+  group_by(operon) %>%
+  summarise(
+    mean_TPM = mean(TPM),
+    sd_TPM = sd(TPM),
+    n_TPM = n(),
+    se_TPM = sd_TPM/sqrt(n_TPM)
+  )
 
