@@ -70,3 +70,20 @@ mv /user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_counts_summarised_t
 echo $file; \
 done
 
+
+#Creates RSEM_TPM_MAG_summarised.tsv file
+cut -f 1 /user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_new/MAG_TPM_files/LIB-Glomicave-0001_resequenced_mRNA_filtered.bam.genes.results.tsv > \
+/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_TPM_MAG_summarised.tsv
+
+#Removes "_filtered.bam.genes.results.tsv" from the end of the file names in /user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_new/MAG_TPM_files
+for file in /user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_new/MAG_TPM_files/*; \
+do mv $file $(echo $file | sed 's/_filtered.bam.genes.results.tsv//'); \
+echo $file; \
+done
+
+#For loop that takes .genes.results files from /user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_new/MAG_TPM_files/, cuts the gene_id and MAG_TPM columns, renames the MAG_TPM column to the file name, and joins them all into one file by gene_id
+for file in /user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_new/MAG_TPM_files/*; \
+do cut -f 1,10 $file | sed 's/TPM/'$(basename "$file")'/' | join - /user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_TPM_MAG_summarised.tsv > /user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_TPM_MAG_summarised_temp.tsv; \
+mv /user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_TPM_MAG_summarised_temp.tsv /user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_TPM_MAG_summarised.tsv; \
+echo $file; \
+done
