@@ -4,7 +4,7 @@ here("/user_data/ahd/EPS_PIPELINE")
 ##############################################
 # The main proximity filtration
 ##############################################
-source("/user_data/ahd/EPS_PIPELINE/scripts/R/proximity_filtration.R")
+source("/mnt/ahd/EPS_PIPELINE/scripts/R/proximity_filtration.R")
 # Default: min_genes=2 and perc_id=20
 proximity_filtration("alginate", 
                      min_genes = 6)

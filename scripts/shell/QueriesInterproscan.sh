@@ -12,7 +12,7 @@ RESULTS=$WD/interproscan_results/ips_queries/$date
 # Loading interproscan
 module load InterProScan/5.38-76.0-foss-2018a
 
-for i in $FASTA/*EPS273*; do
+for i in $FASTA/*B_pseudomallei_EPS*; do
 i=`basename $i | rev | cut -c 5- | rev`
 # Removing .faa from the name
 echo $i

@@ -8,6 +8,7 @@ for (file in files) {
   temp[, MAG := substring(gene_id, 1, nchar(gene_id) - 6)]
   temp[, RKM := ifelse(effective_length == 0, 0, expected_count / effective_length)]
   temp[, MAG_TPM := (RKM / sum(RKM)) * 1000000, by = MAG]
-  write.table(temp, paste0("/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_new/MAG_TPM_files/", file, ".tsv"), sep = "\t", row.names = F, quote = F)
+  temp[is.nan(MAG_TPM), MAG_TPM := 0]
+  write.table(temp, paste0("/user_data/ahd/EPS_PIPELINE/data/metatranscriptomics/RSEM_new/MAG_TPM_files/", substring(file, 1, nchar(file) - 27)), sep = "\t", row.names = F, quote = F)
   print(file)
 }
